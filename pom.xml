@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.example.sleuthsamples</groupId>
+	<artifactId>spring-cloud-sleuth-samples</artifactId>
+	<packaging>pom</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<name>Spring Cloud Sleuth Samples</name>
+	<description>Spring Cloud Sleuth Samples</description>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>resttemplate</module>
+				<module>mvc</module>
+				<module>acceptance-tests</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>notest</id>
+			<modules>
+				<module>resttemplate</module>
+				<module>mvc</module>
+			</modules>
+		</profile>
+	</profiles>
+
+</project>

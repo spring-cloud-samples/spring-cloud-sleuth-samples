@@ -1,0 +1,9 @@
+server:
+  port: 7100
+
+spring:
+  application:
+    name: mvc
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG
