@@ -3,3 +3,5 @@
 # Spring Cloud Sleuth Samples
 
 This repository contains isolated samples showing various integrations with Spring Cloud Sleuth.
+
+You can read more about the details of the instrumentation logic in each of the samples.
