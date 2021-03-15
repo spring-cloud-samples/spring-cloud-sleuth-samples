@@ -29,7 +29,8 @@ class TracingAssertions {
 
 	void assertThatTraceIdGotPropagated(String... appIds) {
 		Pattern tracePattern = Pattern.compile("^.*<ACCEPTANCE_TEST> <TRACE:(.*)> .*$");
-		Awaitility.await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+		Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
+				.atMost(15, TimeUnit.SECONDS).untilAsserted(() -> {
 			List<String> traceIds = Arrays.stream(appIds).map(this.projectDeployer::getLog)
 					.flatMap(s -> Arrays.stream(s.split(System.lineSeparator())))
 					.filter(s -> s.contains("ACCEPTANCE_TEST")).map(s -> {
@@ -41,6 +42,7 @@ class TracingAssertions {
 					}).filter(Objects::nonNull)
 					.distinct()
 					.collect(Collectors.toList());
+			log.info("Found the following trace id {}", traceIds);
 			then(traceIds).as("TraceId should have only one value").hasSize(1);
 		});
 	}

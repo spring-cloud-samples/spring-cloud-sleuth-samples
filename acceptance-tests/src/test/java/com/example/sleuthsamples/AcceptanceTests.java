@@ -8,8 +8,11 @@ import org.junit.jupiter.api.TestInfo;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.SocketUtils;
 
-//@SpringBootTest(properties = {"spring.cloud.sleuth.samples.rebuild-projects=true", "spring.cloud.sleuth.samples.project-root=${user.home}/repo/spring-cloud-sleuth-samples", "maven.home=${user.home}/.sdkman/candidates/maven/current"})
-@SpringBootTest
+// @formatter:off
+@SpringBootTest(
+//		properties = {"spring.cloud.sleuth.samples.rebuild-projects=true", "spring.cloud.sleuth.samples.project-root=${user.home}/repo/spring-cloud-sleuth-samples", "maven.home=${user.home}/.sdkman/candidates/maven/current"}
+)
+// @formatter:on
 class AcceptanceTests extends AcceptanceTestsBase {
 
 	@Test
@@ -23,5 +26,14 @@ class AcceptanceTests extends AcceptanceTestsBase {
 
 		//then
 		assertThatTraceIdGotPropagated(producerId, consumerId);
+	}
+
+	@Test
+	void should_pass_tracing_context_with_spring_integration(TestInfo testInfo) {
+		//when
+		String appId = deploy(testInfo, "integration");
+
+		//then
+		assertThatTraceIdGotPropagated(appId);
 	}
 }

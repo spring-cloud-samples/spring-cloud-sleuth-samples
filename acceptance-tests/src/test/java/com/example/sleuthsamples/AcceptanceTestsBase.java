@@ -40,6 +40,10 @@ class AcceptanceTestsBase {
 		return this.projectDeployer.deploy(testInfo, appName, props);
 	}
 
+	String deploy(TestInfo testInfo, String appName) {
+		return this.projectDeployer.deploy(testInfo, appName, Map.of());
+	}
+
 	String waitUntilStarted(Callable<String> callable) {
 		return this.projectDeployer.waitUntilStarted(callable);
 	}

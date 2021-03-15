@@ -1,0 +1,5 @@
+= Spring Integratoin Sleuth Integration
+
+We're using a `ChannelInterceptor` called `org.springframework.cloud.sleuth.instrument.messaging.TracingChannelInterceptor`.
+
+You can check the instrumentation code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/messaging/TracingChannelInterceptor.java[here] and the configuration is https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/messaging/TraceSpringIntegrationAutoConfiguration.java[here].
