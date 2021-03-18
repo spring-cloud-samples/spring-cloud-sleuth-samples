@@ -21,19 +21,19 @@ class AcceptanceTests extends AcceptanceTestsBase {
 		int port = SocketUtils.findAvailableTcpPort();
 		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "mvc", port));
 
-		//when
+		// when
 		String consumerId = deploy(testInfo, "resttemplate", Map.of("url", "http://localhost:" + port));
 
-		//then
+		// then
 		assertThatTraceIdGotPropagated(producerId, consumerId);
 	}
 
 	@Test
 	void should_pass_tracing_context_with_spring_integration(TestInfo testInfo) {
-		//when
+		// when
 		String appId = deploy(testInfo, "integration");
 
-		//then
+		// then
 		assertThatTraceIdGotPropagated(appId);
 	}
 }
