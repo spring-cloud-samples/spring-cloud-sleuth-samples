@@ -1,0 +1,9 @@
+server:
+  port: 7110
+
+spring:
+  application:
+    name: webflux
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG

@@ -1,0 +1,73 @@
+package com.example.sleuthsamples;
+
+import java.time.Duration;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.TraceContext;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@SpringBootApplication
+public class WebClientApplication implements CommandLineRunner {
+
+	public static void main(String... args) {
+		new SpringApplicationBuilder(WebClientApplication.class).web(WebApplicationType.NONE).run(args);
+	}
+
+	@Autowired
+	WebClientService webClientService;
+
+	@Override
+	public void run(String... args) throws Exception {
+		this.webClientService.call().block(Duration.ofSeconds(5));
+	}
+}
+
+@Configuration
+class Config {
+	// You must register WebClient as a bean!
+	@Bean
+	WebClient webClient(@Value("${url:http://localhost:7110}") String url) {
+		return WebClient.builder().baseUrl(url).build();
+	}
+}
+
+@Service
+class WebClientService {
+	private static final Logger log = LoggerFactory.getLogger(WebClientService.class);
+
+	private final WebClient webClient;
+
+	private final Tracer tracer;
+
+	WebClientService(WebClient webClient, Tracer tracer) {
+		this.webClient = webClient;
+		this.tracer = tracer;
+	}
+
+	Mono<String> call() {
+		Span nextSpan = this.tracer.nextSpan();
+		return Mono.just(nextSpan)
+				.doOnNext(span -> this.tracer.withSpan(span.start()))
+				.flatMap(span -> {
+					log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from service", this.tracer.currentSpan().context().traceId());
+					return this.webClient.get().retrieve().bodyToMono(String.class);
+				})
+				// You need to update the context manually since we're outside of WebFlux
+				.contextWrite(context -> context.put(TraceContext.class, nextSpan.context()))
+				.doFinally(signalType -> nextSpan.end());
+	}
+}

@@ -29,6 +29,19 @@ class AcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
+	void should_pass_tracing_context_from_web_client_to_webflux(TestInfo testInfo) {
+		// given
+		int port = SocketUtils.findAvailableTcpPort();
+		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "webflux", port));
+
+		// when
+		String consumerId = deploy(testInfo, "webclient", Map.of("url", "http://localhost:" + port));
+
+		// then
+		assertThatTraceIdGotPropagated(producerId, consumerId);
+	}
+
+	@Test
 	void should_pass_tracing_context_with_spring_integration(TestInfo testInfo) {
 		// when
 		String appId = deploy(testInfo, "integration");

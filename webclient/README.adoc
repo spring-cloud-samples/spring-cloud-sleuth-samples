@@ -1,0 +1,4 @@
+= Spring WebClient Integration
+
+We're using a `WebClient`'s exchange filter function. `org.springframework.cloud.sleuth.instrument.web.client.TraceExchangeFilterFunction`.
+You can check the instrumentation code https://github.com/spring-cloud/spring-cloud-sleuth/tree/master/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/web/client/TraceExchangeFilterFunction.java[here] the bean post processor https://github.com/spring-cloud/spring-cloud-sleuth/tree/master/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/web/client/TraceWebClientBeanPostProcessor.java[here] the and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/web/client/TraceWebClientAutoConfiguration.java[here].

@@ -33,6 +33,8 @@
 				<module>resttemplate</module>
 				<module>mvc</module>
 				<module>integration</module>
+				<module>webflux</module>
+				<module>webclient</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -41,6 +43,8 @@
 			<modules>
 				<module>resttemplate</module>
 				<module>mvc</module>
+				<module>webflux</module>
+				<module>webclient</module>
 				<module>integration</module>
 			</modules>
 		</profile>
