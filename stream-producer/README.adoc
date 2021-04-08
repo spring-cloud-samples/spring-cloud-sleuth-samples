@@ -1,5 +1,5 @@
-= Spring RestTemplate Integration
+= Spring Cloud Stream integration
 
-We're using a `RestTemplate`'s interceptors. `org.springframework.cloud.sleuth.instrument.web.mvc.TracingClientHttpRequestInterceptor` and `org.springframework.cloud.sleuth.instrument.web.mvc.TracingAsyncClientHttpRequestInterceptor`.
+We're using a `FunctionAroundWrapper` advice. `org.springframework.cloud.sleuth.instrument.messaging.TraceFunctionAroundWrapper`.
 
-You can check the instrumentation code https://github.com/spring-cloud/spring-cloud-sleuth/tree/master/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/web/mvc[here] and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/web/client/TraceWebAsyncClientAutoConfiguration.java[here for async] and https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/web/client/TraceWebClientAutoConfiguration.java[here for non-async].
+You can check the instrumentation code https://github.com/spring-cloud/spring-cloud-sleuth/tree/master/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/messaging/TraceFunctionAroundWrapper.java[here] and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/messaging/TraceFunctionAutoConfiguration.java[here].
