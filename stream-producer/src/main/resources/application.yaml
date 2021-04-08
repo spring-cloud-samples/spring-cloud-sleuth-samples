@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: stream-producer
+
+spring.cloud.stream:
+  source: channel
+  bindings.channel-out-0.destination: channeldestination
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG

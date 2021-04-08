@@ -31,7 +31,7 @@ class WebFluxController {
 	@RequestMapping("/")
 	public Mono<String> span() {
 		String traceId = this.tracer.currentSpan().context().traceId();
-		log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from controller", traceId);
+		log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from producer", traceId);
 		return Mono.just(traceId);
 	}
 }

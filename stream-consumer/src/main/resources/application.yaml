@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: stream-consumer
+
+spring.cloud.stream:
+  bindings.channel-in-0.destination: channeldestination
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG

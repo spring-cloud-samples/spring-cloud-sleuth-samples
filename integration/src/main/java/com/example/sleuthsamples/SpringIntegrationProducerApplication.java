@@ -39,7 +39,7 @@ public class SpringIntegrationProducerApplication implements CommandLineRunner {
 		Span span = this.tracer.nextSpan();
 		try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
 			String trace = span.context().traceId();
-			log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from Spring Integration command line runner", trace);
+			log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from producer", trace);
 			this.fileGateway.placeOrder(trace);
 		} finally {
 			span.end();
@@ -65,7 +65,7 @@ class Config {
 		return IntegrationFlows.from("files.input")
 				.transform(message -> {
 					String traceId = tracer.currentSpan().context().traceId();
-					log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from Spring Integration", traceId);
+					log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", traceId);
 					return message;
 				})
 				.handle(Files.outboundAdapter(file))

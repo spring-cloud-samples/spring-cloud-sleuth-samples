@@ -35,6 +35,8 @@
 				<module>integration</module>
 				<module>webflux</module>
 				<module>webclient</module>
+				<module>stream-producer</module>
+				<module>stream-consumer</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -46,6 +48,8 @@
 				<module>webflux</module>
 				<module>webclient</module>
 				<module>integration</module>
+				<module>stream-producer</module>
+				<module>stream-consumer</module>
 			</modules>
 		</profile>
 	</profiles>

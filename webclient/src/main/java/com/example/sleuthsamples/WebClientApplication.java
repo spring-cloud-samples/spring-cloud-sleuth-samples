@@ -13,7 +13,6 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.sleuth.Span;
-import org.springframework.cloud.sleuth.TraceContext;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -63,11 +62,9 @@ class WebClientService {
 		return Mono.just(nextSpan)
 				.doOnNext(span -> this.tracer.withSpan(span.start()))
 				.flatMap(span -> {
-					log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from service", this.tracer.currentSpan().context().traceId());
+					log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", this.tracer.currentSpan().context().traceId());
 					return this.webClient.get().retrieve().bodyToMono(String.class);
 				})
-				// You need to update the context manually since we're outside of WebFlux
-				.contextWrite(context -> context.put(TraceContext.class, nextSpan.context()))
 				.doFinally(signalType -> nextSpan.end());
 	}
 }
