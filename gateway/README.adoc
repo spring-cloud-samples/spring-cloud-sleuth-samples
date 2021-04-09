@@ -1,0 +1,5 @@
+= Spring WebFlux Integration
+
+We're using a special `WebFilter` called `org.springframework.cloud.sleuth.instrument.web.TraceWebFilter`.
+
+You can check the instrumentation code https://github.com/spring-cloud/spring-cloud-sleuth/tree/master/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/web/TraceWebFilter.java[here] and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/web/TraceWebFluxConfiguration.java[here].

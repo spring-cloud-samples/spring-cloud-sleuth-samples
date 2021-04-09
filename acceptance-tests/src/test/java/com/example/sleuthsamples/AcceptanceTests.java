@@ -56,6 +56,19 @@ class AcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
+	void should_pass_tracing_context_from_gateway_to_mvc(TestInfo testInfo) {
+		// given
+		int port = SocketUtils.findAvailableTcpPort();
+		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "mvc", port));
+
+		// when
+		String consumerId = deploy(testInfo, "gateway", Map.of("url", "http://localhost:" + port));
+
+		// then
+		assertThatTraceIdGotPropagated(producerId, consumerId);
+	}
+
+	@Test
 	void should_pass_tracing_context_with_spring_integration(TestInfo testInfo) {
 		// when
 		String appId = deploy(testInfo, "integration");

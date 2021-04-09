@@ -38,6 +38,7 @@
 				<module>stream-producer</module>
 				<module>stream-consumer</module>
 				<module>openfeign</module>
+				<module>gateway</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -51,6 +52,7 @@
 				<module>integration</module>
 				<module>stream-producer</module>
 				<module>stream-consumer</module>
+				<module>gateway</module>
 				<module>openfeign</module>
 			</modules>
 		</profile>
