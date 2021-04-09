@@ -62,7 +62,7 @@ class ProjectDeployer {
 			String app = callable.call();
 			Awaitility.await()
 					.pollInterval(1, TimeUnit.SECONDS)
-					.atMost(15, TimeUnit.SECONDS).untilAsserted(() -> {
+					.atMost(120, TimeUnit.SECONDS).untilAsserted(() -> {
 				log.info("Waiting for the application with id [{}] to start...", app);
 				then(this.appDeployer.status(app).getState()).isEqualTo(DeploymentState.deployed);
 			});
