@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: stream-reactive-producer
+  sleuth:
+    integration:
+      # This needs to be ON for reactive stream to work
+      enabled: true
+
+# streambridge -> channelreactivedestination-input -> function bean -> channelreactivedestination
+spring.cloud.stream.bindings.channel-in-0.destination: channelreactivedestination-input
+spring.cloud.stream.bindings.channel-out-0.destination: channelreactivedestination
+
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG

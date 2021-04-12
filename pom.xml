@@ -37,6 +37,8 @@
 				<module>webclient</module>
 				<module>stream-producer</module>
 				<module>stream-consumer</module>
+				<module>stream-reactive-producer</module>
+				<module>stream-reactive-consumer</module>
 				<module>openfeign</module>
 				<module>gateway</module>
 				<module>circuitbreaker</module>
@@ -53,6 +55,8 @@
 				<module>integration</module>
 				<module>stream-producer</module>
 				<module>stream-consumer</module>
+				<module>stream-reactive-producer</module>
+				<module>stream-reactive-consumer</module>
 				<module>gateway</module>
 				<module>circuitbreaker</module>
 				<module>openfeign</module>

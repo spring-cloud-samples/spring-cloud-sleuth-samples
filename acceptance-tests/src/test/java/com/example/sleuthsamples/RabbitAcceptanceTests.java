@@ -28,11 +28,22 @@ class RabbitAcceptanceTests extends AcceptanceTestsBase {
 	@Test
 	void should_pass_tracing_context_from_stream_producer_to_consumer(TestInfo testInfo) {
 		// given
-		int port = SocketUtils.findAvailableTcpPort();
 		String consumerId = deploy(testInfo, "stream-consumer", rabbitMqPort());
 
 		// when
 		String producerId = deploy(testInfo, "stream-producer", rabbitMqPort());
+
+		// then
+		assertThatTraceIdGotPropagated(producerId, consumerId);
+	}
+
+	@Test
+	void should_pass_tracing_context_from_stream_reactive_producer_to_reactive_consumer(TestInfo testInfo) {
+		// given
+		String consumerId = deploy(testInfo, "stream-reactive-consumer", rabbitMqPort());
+
+		// when
+		String producerId = deploy(testInfo, "stream-reactive-producer", rabbitMqPort());
 
 		// then
 		assertThatTraceIdGotPropagated(producerId, consumerId);

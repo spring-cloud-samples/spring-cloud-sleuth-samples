@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: stream-reactive-consumer
+  sleuth:
+    integration:
+      # This needs to be ON for reactive stream to work
+      enabled: true
+
+spring.cloud.stream:
+  bindings.channel-in-0.destination: channelreactivedestination
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG
