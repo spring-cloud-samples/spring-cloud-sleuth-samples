@@ -1,6 +1,6 @@
 spring:
   application:
-    name: circuitbreaker
+    name: task
 
 # For tests
 logging.level.org.springframework.cloud.sleuth: DEBUG
