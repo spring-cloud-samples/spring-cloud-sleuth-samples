@@ -42,6 +42,7 @@
 				<module>openfeign</module>
 				<module>gateway</module>
 				<module>circuitbreaker</module>
+				<module>batch</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -60,6 +61,7 @@
 				<module>gateway</module>
 				<module>circuitbreaker</module>
 				<module>openfeign</module>
+				<module>batch</module>
 			</modules>
 		</profile>
 	</profiles>

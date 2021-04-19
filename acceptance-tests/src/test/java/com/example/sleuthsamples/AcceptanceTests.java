@@ -78,6 +78,15 @@ class AcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
+	void should_pass_tracing_context_with_batch(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "batch");
+
+		// then
+		assertThatTraceIdGotPropagated(appId);
+	}
+
+	@Test
 	void should_pass_tracing_context_with_circuit_breaker(TestInfo testInfo) {
 		// when
 		String appId = deploy(testInfo, "circuitbreaker");
