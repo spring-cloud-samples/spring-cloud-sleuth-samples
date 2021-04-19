@@ -85,4 +85,13 @@ class AcceptanceTests extends AcceptanceTestsBase {
 		// then
 		assertThatTraceIdGotPropagated(appId);
 	}
+
+	@Test
+	void should_pass_tracing_context_with_spring_cloud_task(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "task");
+
+		// then
+		assertThatTraceIdGotPropagated(appId);
+	}
 }
