@@ -85,4 +85,13 @@ class AcceptanceTests extends AcceptanceTestsBase {
 		// then
 		assertThatTraceIdGotPropagated(appId);
 	}
+
+	@Test
+	void should_pass_tracing_context_with_reactive_circuit_breaker(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "circuitbreaker-reactive");
+
+		// then
+		assertThatTraceIdGotPropagated(appId);
+	}
 }
