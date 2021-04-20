@@ -43,7 +43,6 @@ class Config {
 
 @Service
 class WebClientService {
-	private static final Logger log = LoggerFactory.getLogger(WebClientService.class);
 
 	private final Environment environment;
 
@@ -60,7 +59,7 @@ class WebClientService {
 	void call() {
 		Span hello = this.tracer.nextSpan().name("hello");
 		try (Tracer.SpanInScope spanInScope = this.tracer.withSpan(hello.start())) {
-			int port = environment.getProperty("server.port", Integer.class, -1);
+			int port = environment.getProperty("server.port", Integer.class, 8888);
 			this.restTemplate.getForObject("http://localhost:" + port + "/master/application.yml", String.class);
 
 		} finally {
