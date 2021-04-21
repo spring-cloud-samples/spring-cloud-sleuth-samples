@@ -8,19 +8,33 @@ You can read more about the details of the instrumentation logic in each of the 
 
 ## Turning on Zipkin support
 
-Build the apps with the `zipkin` profile turned on. If you want to run the project from IDE remember to tick the `zipkin` profile there too.
+Run Zipkin
 
-. All projects
+```bash
+$ docker run -d -p 9411:9411 openzipkin/zipkin
+```
 
+Build the apps with the `zipkin` profile turned on.
+
+. All projects and acceptance tests
 ```bash
 $ ./mvnw clean install -Pzipkin
 ```
 
 . Build one project
-
 ```bash
 $ ./mvnw clean install -Pzipkin -pl task
+$ # Run one app
+$ java -jar task/target/task*.jar 
 ```
+
+. Run one project (example for task)
+```bash
+$ ./mvnw -Pzipkin -pl task spring-boot:run
+```
+
+If you want to run the project from IDE remember to tick the `zipkin` profile there too.
+
 
 # FAQ
 
