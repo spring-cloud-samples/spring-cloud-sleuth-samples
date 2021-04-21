@@ -46,6 +46,7 @@
 				<module>task</module>
 				<module>config-server</module>
 				<module>batch</module>
+				<module>bus</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -68,6 +69,7 @@
 				<module>task</module>
 				<module>config-server</module>
 				<module>batch</module>
+				<module>bus</module>
 			</modules>
 		</profile>
 	</profiles>

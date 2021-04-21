@@ -3,7 +3,7 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.example.sleuthsamples</groupId>
-	<artifactId>circuitbreaker</artifactId>
+	<artifactId>bus</artifactId>
 	<version>1.0.0-SLEUTH</version>
 
 	<parent>
@@ -14,7 +14,7 @@
 	</parent>
 
 	<properties>
-		<spring-cloud.version>2020.1.0-SNAPSHOT</spring-cloud.version>
+		<spring-cloud.version>2020.0.3-SNAPSHOT</spring-cloud.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
@@ -22,7 +22,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
