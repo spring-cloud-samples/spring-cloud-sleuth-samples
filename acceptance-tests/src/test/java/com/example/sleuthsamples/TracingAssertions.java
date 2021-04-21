@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -58,6 +59,29 @@ class TracingAssertions {
 			then(traceIds).as("TraceId should have only one value").hasSize(1);
 			then(producerPresent).as("Producer code must be called").isTrue();
 			then(consumerPresent).as("Consumer code must be called").isTrue();
+		});
+	}
+
+	void assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(String appId, String springApplicationName, int minNumberOfOccurrences) {
+		Pattern pattern = Pattern.compile("^.*\\[" + springApplicationName + ",([a-z|0-9]+?),([a-z|0-9]+?)].*$");
+		Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
+				.atMost(120, TimeUnit.SECONDS).untilAsserted(() -> {
+			AtomicInteger counter = new AtomicInteger();
+			List<String> traceIds = Arrays.stream(this.projectDeployer.getLog(appId)
+					.split(System.lineSeparator()))
+					.map(s -> {
+						Matcher matcher = pattern.matcher(s);
+						if (matcher.matches()) {
+							counter.incrementAndGet();
+							return matcher.group(1);
+						}
+						return null;
+					}).filter(Objects::nonNull)
+					.distinct()
+					.collect(Collectors.toList());
+			log.info("Found the following trace id {}", traceIds);
+			then(traceIds).as("TraceId should have only one value").hasSize(1);
+			then(counter).as("There should be at least X number of times").hasValueGreaterThanOrEqualTo(minNumberOfOccurrences);
 		});
 	}
 }

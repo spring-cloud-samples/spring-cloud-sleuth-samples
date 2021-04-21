@@ -61,6 +61,10 @@ class AcceptanceTestsBase {
 		this.tracingAssertions.assertThatTraceIdGotPropagated(appIds);
 	}
 
+	void assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(String appId, String springAppName, int minOccurrence) {
+		this.tracingAssertions.assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(appId, springAppName, minOccurrence);
+	}
+
 	@SpringBootApplication
 	static class Config {
 

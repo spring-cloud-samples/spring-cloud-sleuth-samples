@@ -103,4 +103,14 @@ class AcceptanceTests extends AcceptanceTestsBase {
 		// then
 		assertThatTraceIdGotPropagated(appId);
 	}
+
+	@Test
+	void should_pass_tracing_context_with_config_server(TestInfo testInfo) {
+		// when
+		int port = SocketUtils.findAvailableTcpPort();
+		String appId = waitUntilStarted(() -> deployWebApp(testInfo, "config-server", port));
+
+		// then
+		assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(appId, "config-server", 2);
+	}
 }

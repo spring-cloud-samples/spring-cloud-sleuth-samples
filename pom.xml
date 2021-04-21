@@ -44,6 +44,7 @@
 				<module>circuitbreaker</module>
 				<module>circuitbreaker-reactive</module>
 				<module>task</module>
+				<module>config-server</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -52,18 +53,19 @@
 			<modules>
 				<module>resttemplate</module>
 				<module>mvc</module>
+				<module>integration</module>
 				<module>webflux</module>
 				<module>webclient</module>
-				<module>integration</module>
 				<module>stream-producer</module>
 				<module>stream-consumer</module>
 				<module>stream-reactive-producer</module>
 				<module>stream-reactive-consumer</module>
+				<module>openfeign</module>
 				<module>gateway</module>
 				<module>circuitbreaker</module>
 				<module>circuitbreaker-reactive</module>
-				<module>openfeign</module>
 				<module>task</module>
+				<module>config-server</module>
 			</modules>
 		</profile>
 	</profiles>
