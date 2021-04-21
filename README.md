@@ -11,11 +11,13 @@ You can read more about the details of the instrumentation logic in each of the 
 Build the apps with the `zipkin` profile turned on. If you want to run the project from IDE remember to tick the `zipkin` profile there too.
 
 . All projects
+
 ```bash
 $ ./mvnw clean install -Pzipkin
 ```
 
 . Build one project
+
 ```bash
 $ ./mvnw clean install -Pzipkin -pl task
 ```

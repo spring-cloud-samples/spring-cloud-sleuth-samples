@@ -1,5 +1,9 @@
 root = true
 
+[*]
+end_of_line = crlf
+insert_final_newline = true
+
 [*.java]
 indent_style = tab
 indent_size = 4
@@ -11,11 +15,6 @@ indent_size = 4
 continuation_indent_size = 8
 
 [*.xml]
-indent_style = tab
-indent_size = 4
-continuation_indent_size = 8
-
-[*.sh]
 indent_style = tab
 indent_size = 4
 continuation_indent_size = 8
