@@ -21,3 +21,23 @@ $ ./mvnw clean install -Pzipkin
 ```bash
 $ ./mvnw clean install -Pzipkin -pl task
 ```
+
+# FAQ
+
+## The logging text makes no sense
+
+You can see logs like this
+
+```java
+log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from producer", tracer.currentSpan().context().traceId());
+```
+
+or this
+
+```java
+log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", tracer.currentSpan().context().traceId());
+```
+
+even though there is no consumer / producer... 
+
+That's because in the acceptance tests we're using conventions and we're searching for exactly those entries in the logs to see if the context got properly propagated. 
