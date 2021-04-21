@@ -43,6 +43,7 @@
 				<module>gateway</module>
 				<module>circuitbreaker</module>
 				<module>circuitbreaker-reactive</module>
+				<module>task</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -62,6 +63,7 @@
 				<module>circuitbreaker</module>
 				<module>circuitbreaker-reactive</module>
 				<module>openfeign</module>
+				<module>task</module>
 			</modules>
 		</profile>
 	</profiles>
