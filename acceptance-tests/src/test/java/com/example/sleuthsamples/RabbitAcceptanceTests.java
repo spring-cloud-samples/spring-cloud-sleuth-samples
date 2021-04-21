@@ -49,6 +49,15 @@ class RabbitAcceptanceTests extends AcceptanceTestsBase {
 		assertThatTraceIdGotPropagated(producerId, consumerId);
 	}
 
+	@Test
+	void should_pass_tracing_context_with_bus(TestInfo testInfo) {
+		// when
+		String producerId = deploy(testInfo, "bus", rabbitMqPort());
+
+		// then
+		assertThatTraceIdGotPropagated(producerId);
+	}
+
 	private Map<String, String> rabbitMqPort() {
 		return Map.of("spring.rabbitmq.port", rabbit.getAmqpPort().toString());
 	}
