@@ -45,6 +45,7 @@
 				<module>circuitbreaker-reactive</module>
 				<module>task</module>
 				<module>config-server</module>
+				<module>batch</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -66,6 +67,7 @@
 				<module>circuitbreaker-reactive</module>
 				<module>task</module>
 				<module>config-server</module>
+				<module>batch</module>
 			</modules>
 		</profile>
 	</profiles>
