@@ -122,4 +122,13 @@ class AcceptanceTests extends AcceptanceTestsBase {
 		// then
 		assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(appId, "config-server", 2);
 	}
+
+	@Test
+	void should_pass_tracing_context_with_deployer(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "deployer");
+
+		// then
+		assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(appId, "deployer", 10);
+	}
 }
