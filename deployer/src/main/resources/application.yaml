@@ -1,7 +1,9 @@
 spring:
   application:
     name: deployer
+  sleuth:
+    reactor:
+      instrumentation-type: decorate_queues
 
 # For tests
-logging.level.org.springframework.cloud.sleuth: DEBUG
-logging.level.org.springframework.cloud.task: DEBUG
+logging.level.org.springframework.cloud.sleuth.instrument.deployer: TRACE
