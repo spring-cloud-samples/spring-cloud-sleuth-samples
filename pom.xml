@@ -47,6 +47,7 @@
 				<module>config-server</module>
 				<module>batch</module>
 				<module>bus</module>
+				<module>deployer</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -70,6 +71,7 @@
 				<module>config-server</module>
 				<module>batch</module>
 				<module>bus</module>
+				<module>deployer</module>
 			</modules>
 		</profile>
 	</profiles>

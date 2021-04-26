@@ -79,7 +79,7 @@ class TracingAssertions {
 					}).filter(Objects::nonNull)
 					.distinct()
 					.collect(Collectors.toList());
-			log.info("Found the following trace id {}", traceIds);
+			log.info("Found the following trace id {} X number of times {}", traceIds, minNumberOfOccurrences);
 			then(traceIds).as("TraceId should have only one value").hasSize(1);
 			then(counter).as("There should be at least X number of times").hasValueGreaterThanOrEqualTo(minNumberOfOccurrences);
 		});
