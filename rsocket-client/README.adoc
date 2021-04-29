@@ -1,3 +1,5 @@
 = Spring RSocket - client
 
-TODO: Fill it out
+We're using a `RSocketServerCustomizer`, `RSocketConnectorCustomizer` together with `TraceMessagingAspect`.
+
+You can check the instrumentation code https://github.com/spring-cloud/spring-cloud-sleuth/tree/3.1.x/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/rsocket[here] and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/3.1.x/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/rsocket[here].
