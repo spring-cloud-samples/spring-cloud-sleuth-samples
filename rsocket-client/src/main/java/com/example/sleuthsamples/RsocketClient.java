@@ -1,5 +1,6 @@
 package com.example.sleuthsamples;
 
+import java.net.URI;
 import java.time.Duration;
 
 import org.slf4j.Logger;
@@ -16,22 +17,22 @@ import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.rsocket.RSocketRequester;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
-public class WebClientApplication implements CommandLineRunner {
+public class RsocketClient implements CommandLineRunner {
 
 	public static void main(String... args) {
-		new SpringApplicationBuilder(WebClientApplication.class).web(WebApplicationType.NONE).run(args);
+		new SpringApplicationBuilder(RsocketClient.class).web(WebApplicationType.NONE).run(args);
 	}
 
 	@Autowired
-	WebClientService webClientService;
+	RsocketService rsocketService;
 
 	@Override
 	public void run(String... args) throws Exception {
-		this.webClientService.call().block(Duration.ofSeconds(5));
+		this.rsocketService.call().block(Duration.ofSeconds(5));
 		// To ensure that the spans got successfully reported
 		Thread.sleep(500);
 	}
@@ -39,33 +40,33 @@ public class WebClientApplication implements CommandLineRunner {
 
 @Configuration
 class Config {
-	// You must register WebClient as a bean!
+	// You must register RSocketRequester as a bean!
 	@Bean
-	WebClient webClient(@Value("${url:http://localhost:7110}") String url) {
-		return WebClient.builder().baseUrl(url).build();
+	RSocketRequester myRSocketRequester(@Value("${url:ws://localhost:7112/rsocket}") String url, RSocketRequester.Builder builder) {
+		return builder.websocket(URI.create(url));
 	}
 }
 
 @Service
-class WebClientService {
-	private static final Logger log = LoggerFactory.getLogger(WebClientService.class);
+class RsocketService {
+	private static final Logger log = LoggerFactory.getLogger(RsocketService.class);
 
-	private final WebClient webClient;
+	private final RSocketRequester rSocketRequester;
 
 	private final Tracer tracer;
 
-	WebClientService(WebClient webClient, Tracer tracer) {
-		this.webClient = webClient;
+	RsocketService(RSocketRequester rSocketRequester, Tracer tracer) {
+		this.rSocketRequester = rSocketRequester;
 		this.tracer = tracer;
 	}
 
 	Mono<String> call() {
-		Span nextSpan = this.tracer.nextSpan();
+		Span nextSpan = this.tracer.nextSpan().name("client");
 		return Mono.just(nextSpan)
 				.doOnNext(span -> this.tracer.withSpan(span.start()))
 				.flatMap(span -> {
-					log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", this.tracer.currentSpan().context().traceId());
-					return this.webClient.get().retrieve().bodyToMono(String.class);
+					log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from producer", this.tracer.currentSpan().context().traceId());
+					return this.rSocketRequester.route("foo").retrieveMono(String.class);
 				})
 				.doFinally(signalType -> nextSpan.end());
 	}

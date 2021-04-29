@@ -96,6 +96,19 @@ class AcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
+	void should_pass_tracing_context_from_rsocket(TestInfo testInfo) {
+		// given
+		int port = SocketUtils.findAvailableTcpPort();
+		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "rsocket-server", port));
+
+		// when
+		String consumerId = deploy(testInfo, "rsocket-client", Map.of("url", "ws://localhost:" + port + "/rsocket"));
+
+		// then
+		assertThatTraceIdGotPropagated(producerId, consumerId);
+	}
+
+	@Test
 	void should_pass_tracing_context_with_reactive_circuit_breaker(TestInfo testInfo) {
 		// when
 		String appId = deploy(testInfo, "circuitbreaker-reactive");

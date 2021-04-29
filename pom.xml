@@ -48,6 +48,8 @@
 				<module>batch</module>
 				<module>bus</module>
 				<module>deployer</module>
+				<module>rsocket-server</module>
+				<module>rsocket-client</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -72,6 +74,8 @@
 				<module>batch</module>
 				<module>bus</module>
 				<module>deployer</module>
+				<module>rsocket-server</module>
+				<module>rsocket-client</module>
 			</modules>
 		</profile>
 	</profiles>

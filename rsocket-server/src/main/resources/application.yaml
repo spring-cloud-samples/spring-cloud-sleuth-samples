@@ -1,0 +1,13 @@
+server:
+  port: 7112
+
+spring:
+  application:
+    name: rsocket-server
+  rsocket:
+    server:
+      mapping-path: "/rsocket"
+      transport: websocket
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG
