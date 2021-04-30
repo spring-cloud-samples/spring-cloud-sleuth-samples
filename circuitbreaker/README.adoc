@@ -1,5 +1,7 @@
+:branch: 3.1.x
+
 = Spring Cloud CircuitBreaker
 
 We're proxying via **AOP** calls to `CircuitBreaker`. We're wrapping the `Supplier` and the fallback `Function` in trace representations.
 
-You can check the instrumentation code, starting from the aspect https://github.com/spring-cloud/spring-cloud-sleuth/tree/master/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/circuitbreaker/TraceCircuitBreakerFactoryAspect.java[here] and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/circuitbreaker/TraceCircuitBreakerAutoConfiguration.java[here].
+You can check the instrumentation code, starting from the aspect https://github.com/spring-cloud/spring-cloud-sleuth/tree/{branch}/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/circuitbreaker/TraceCircuitBreakerFactoryAspect.java[here] and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/circuitbreaker/TraceCircuitBreakerAutoConfiguration.java[here].

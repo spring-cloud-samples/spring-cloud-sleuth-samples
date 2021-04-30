@@ -1,5 +1,7 @@
+:branch: 3.1.x
+
 = Spring Cloud Stream integration
 
 We're using a `FunctionAroundWrapper` advice. `org.springframework.cloud.sleuth.instrument.messaging.TraceFunctionAroundWrapper`.
 
-You can check the instrumentation code https://github.com/spring-cloud/spring-cloud-sleuth/tree/master/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/messaging/TraceFunctionAroundWrapper.java[here] and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/messaging/TraceFunctionAutoConfiguration.java[here].
+You can check the instrumentation code https://github.com/spring-cloud/spring-cloud-sleuth/tree/{branch}/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/messaging/TraceFunctionAroundWrapper.java[here] and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/messaging/TraceFunctionAutoConfiguration.java[here].

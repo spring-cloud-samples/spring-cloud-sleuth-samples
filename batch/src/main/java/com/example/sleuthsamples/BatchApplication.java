@@ -60,5 +60,7 @@ public class BatchApplication implements CommandLineRunner {
 				}).build()).build();
 
 		this.jobLauncher.run(job, new JobParameters());
+		// To ensure that the spans got successfully reported
+		Thread.sleep(500);
 	}
 }

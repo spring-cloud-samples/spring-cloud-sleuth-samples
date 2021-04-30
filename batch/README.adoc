@@ -1,5 +1,7 @@
+:branch: 3.1.x
+
 = Spring Batch
 
 We're wrapping the `StepBuilderFactory` and `JobBuilderFactory` in trace representations.
 
-You can check the instrumentation code, starting from the aspect https://github.com/spring-cloud/spring-cloud-sleuth/tree/master/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/batch[here] and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/batch/[here].
+You can check the instrumentation code, starting from the aspect https://github.com/spring-cloud/spring-cloud-sleuth/tree/{branch}/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/batch[here] and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/batch/[here].

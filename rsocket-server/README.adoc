@@ -1,3 +1,5 @@
+:branch: 3.1.x
+
 = Spring RSocket - server
 
 We're using a `RSocketServerCustomizer`, `RSocketConnectorCustomizer` together with `TraceMessagingAspect`.
