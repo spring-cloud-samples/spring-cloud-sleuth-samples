@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: data
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG
+logging.level.com.example.sleuthsamples: DEBUG
