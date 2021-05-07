@@ -50,6 +50,8 @@
 				<module>deployer</module>
 				<module>rsocket-server</module>
 				<module>rsocket-client</module>
+				<module>data</module>
+				<module>data-reactive</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -76,6 +78,8 @@
 				<module>deployer</module>
 				<module>rsocket-server</module>
 				<module>rsocket-client</module>
+				<module>data</module>
+				<module>data-reactive</module>
 			</modules>
 		</profile>
 	</profiles>

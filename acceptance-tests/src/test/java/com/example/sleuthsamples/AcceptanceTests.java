@@ -87,6 +87,24 @@ class AcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
+	void should_pass_tracing_context_with_data(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "data");
+
+		// then
+		assertThatTraceIdGotPropagated(appId);
+	}
+
+	@Test
+	void should_pass_tracing_context_with_data_reactive(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "data-reactive");
+
+		// then
+		assertThatTraceIdGotPropagated(appId);
+	}
+
+	@Test
 	void should_pass_tracing_context_with_circuit_breaker(TestInfo testInfo) {
 		// when
 		String appId = deploy(testInfo, "circuitbreaker");

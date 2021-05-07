@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: data-reactive
+  sleuth:
+    reactor:
+      instrumentation-type: decorate_queues
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG
+logging.level.com.example.sleuthsamples: DEBUG
