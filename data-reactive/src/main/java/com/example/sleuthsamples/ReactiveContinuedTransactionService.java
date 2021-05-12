@@ -43,8 +43,6 @@ public class ReactiveContinuedTransactionService {
 				})
 				.flatMapMany(customer -> repository.findByLastName("Bauer"))
 				.doOnNext(cust -> log.info(cust.toString()))
-//				.doOnNext(customerFlux -> repository.deleteById(10238L))
-//				.doOnNext(customerFlux -> log.info(""))
 				.then(this.reactiveNestedTransactionService.requiresNew());
 	}
 }

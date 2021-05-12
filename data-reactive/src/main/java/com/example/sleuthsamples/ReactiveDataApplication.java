@@ -1,16 +1,34 @@
 package com.example.sleuthsamples;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Function;
 
+import io.r2dbc.proxy.ProxyConnectionFactory;
+import io.r2dbc.proxy.callback.ProxyConfig;
+import io.r2dbc.proxy.core.MethodExecutionInfo;
+import io.r2dbc.proxy.core.QueryExecutionInfo;
+import io.r2dbc.proxy.core.QueryInfo;
+import io.r2dbc.proxy.listener.ProxyExecutionListener;
 import io.r2dbc.spi.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.ResolvableType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
@@ -45,4 +63,5 @@ public class ReactiveDataApplication {
 		initializer.setDatabasePopulator(new ResourceDatabasePopulator(new ClassPathResource("schema.sql")));
 		return initializer;
 	}
+
 }

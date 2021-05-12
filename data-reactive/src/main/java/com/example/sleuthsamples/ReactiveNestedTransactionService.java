@@ -16,13 +16,19 @@ public class ReactiveNestedTransactionService {
 
 	private final Tracer tracer;
 
-	public ReactiveNestedTransactionService(Tracer tracer) {
+	private final ReactiveCustomerRepository repository;
+
+	public ReactiveNestedTransactionService(Tracer tracer, ReactiveCustomerRepository repository) {
 		this.tracer = tracer;
+		this.repository = repository;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Mono<Void> requiresNew() {
 		return Mono.fromRunnable(() -> log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer requires new", tracer.currentSpan().context().traceId()))
+				.then(repository.save(new ReactiveCustomer("Hello", "From Propagated Transaction")))
+				.doOnNext(customerFlux -> repository.deleteById(10238L))
+				.doOnNext(customerFlux -> log.info(""))
 				.then();
 	}
 }
