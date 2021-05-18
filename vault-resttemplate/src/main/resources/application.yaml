@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: vault-resttemplate
+  cloud:
+    vault:
+      scheme: http
+      token: vault-plaintext-root-token
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG

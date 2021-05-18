@@ -12,35 +12,34 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.vault.client.RestTemplateCustomizer;
+import org.springframework.vault.core.VaultTemplate;
+import org.springframework.vault.support.VaultResponse;
 
 @SpringBootApplication
-public class RestTemplateApplication implements CommandLineRunner {
+public class VaultRestTemplateApplication implements CommandLineRunner {
+	private static final Logger log = LoggerFactory.getLogger(VaultRestTemplateApplication.class);
 
 	public static void main(String... args) {
-		new SpringApplicationBuilder(RestTemplateApplication.class).web(WebApplicationType.NONE).run(args);
+		new SpringApplicationBuilder(VaultRestTemplateApplication.class).web(WebApplicationType.NONE).run(args);
 	}
 
 	@Autowired
 	RestTemplateService restTemplateService;
 
-	@Value("${url:http://localhost:7100}")
-	String url;
-
 	@Override
 	public void run(String... args) throws Exception {
-		this.restTemplateService.call(url);
+		this.restTemplateService.call();
 	}
-}
 
-@Configuration
-class Config {
-	// You must register RestTemplate as a bean!
+	// This bean is just for acceptance tests - you don't need it in your code
 	@Bean
-	RestTemplate restTemplate() {
-		return new RestTemplate();
+	RestTemplateCustomizer myRestTemplateCustomizer(Tracer tracer) {
+		return restTemplate -> restTemplate.getInterceptors().add((request, body, execution) -> {
+			log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from producer", tracer.currentSpan().context().traceId());
+			return execution.execute(request, body);
+		});
 	}
 }
 
@@ -48,20 +47,20 @@ class Config {
 class RestTemplateService {
 	private static final Logger log = LoggerFactory.getLogger(RestTemplateService.class);
 
-	private final RestTemplate restTemplate;
+	private final VaultTemplate vaultTemplate;
 
 	private final Tracer tracer;
 
-	RestTemplateService(RestTemplate restTemplate, Tracer tracer) {
-		this.restTemplate = restTemplate;
+	RestTemplateService(VaultTemplate vaultTemplate, Tracer tracer) {
+		this.vaultTemplate = vaultTemplate;
 		this.tracer = tracer;
 	}
 
-	String call(String url) {
+	VaultResponse call() {
 		Span span = this.tracer.nextSpan().name("rest-template");
 		try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
 			log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", this.tracer.currentSpan().context().traceId());
-			return this.restTemplate.getForObject(url, String.class);
+			return this.vaultTemplate.read("/secret/foo");
 		} finally {
 			span.end();
 		}

@@ -52,6 +52,8 @@
 				<module>rsocket-client</module>
 				<module>data</module>
 				<module>data-reactive</module>
+				<module>vault-resttemplate</module>
+				<module>vault-webclient</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -80,6 +82,8 @@
 				<module>rsocket-client</module>
 				<module>data</module>
 				<module>data-reactive</module>
+				<module>vault-resttemplate</module>
+				<module>vault-webclient</module>
 			</modules>
 		</profile>
 	</profiles>

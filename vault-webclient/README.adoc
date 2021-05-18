@@ -1,0 +1,5 @@
+:branch: 3.1.x
+
+= Spring Vault
+
+Sleuth instruments Vault via the `RestTemplate` and `WebClient` customizers. It works in the same way as the standard `RestTemplate` and `WebClient` instrumentation.
