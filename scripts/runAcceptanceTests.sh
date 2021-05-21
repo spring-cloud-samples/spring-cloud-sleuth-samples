@@ -2,4 +2,8 @@
 
 set -o errexit
 
-./mvnw clean install
+echo -e "\n\nRunning tests for Brave\n\n"
+./mvnw clean install -U
+
+echo -e "\n\nRunning tests for OTel\n\n"
+./mvnw clean install -Potel -U
