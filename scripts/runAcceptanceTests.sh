@@ -3,7 +3,7 @@
 set -o errexit
 
 echo -e "\n\nRunning tests for Brave\n\n"
-./mvnw clean install
+./mvnw clean install -U
 
 echo -e "\n\nRunning tests for OTel\n\n"
-./mvnw clean install -Potel
+./mvnw clean install -Potel -U
