@@ -160,6 +160,6 @@ class AcceptanceTests extends AcceptanceTestsBase {
 		String appId = deploy(testInfo, "deployer");
 
 		// then
-		assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(appId, "deployer", 10);
+		assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(appId, "deployer", 9);
 	}
 }
