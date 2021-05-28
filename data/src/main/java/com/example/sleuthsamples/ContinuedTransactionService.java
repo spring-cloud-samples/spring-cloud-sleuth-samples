@@ -15,10 +15,13 @@ public class ContinuedTransactionService {
 
 	private final CustomerRepository repository;
 
+	private final NestedTransactionService nestedTransactionService;
+
 	private final Tracer tracer;
 
-	public ContinuedTransactionService(CustomerRepository repository, Tracer tracer) {
+	public ContinuedTransactionService(CustomerRepository repository, NestedTransactionService nestedTransactionService, Tracer tracer) {
 		this.repository = repository;
+		this.nestedTransactionService = nestedTransactionService;
 		this.tracer = tracer;
 	}
 
@@ -39,7 +42,6 @@ public class ContinuedTransactionService {
 		repository.findByLastName("Bauer").forEach(bauer -> {
 			log.info(bauer.toString());
 		});
-		repository.deleteById(10238L);
-		log.info("");
+		nestedTransactionService.newTransaction();
 	}
 }

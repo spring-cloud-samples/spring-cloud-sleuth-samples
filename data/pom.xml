@@ -29,6 +29,20 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- Either p6spy or datasource-proxy -->
+		<dependency>
+			<groupId>p6spy</groupId>
+			<artifactId>p6spy</artifactId>
+			<version>3.9.1</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Either p6spy or datasource-proxy -->
+		<!-- <dependency>
+			<groupId>net.ttddyy</groupId>
+			<artifactId>datasource-proxy</artifactId>
+			<version>1.7</version>
+			<scope>runtime</scope>
+		</dependency> -->
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
