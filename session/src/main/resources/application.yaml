@@ -1,0 +1,12 @@
+server:
+  port: 7200
+
+spring:
+  application:
+    name: session
+  session:
+    store-type: redis # Session store type.
+
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG
