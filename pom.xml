@@ -54,6 +54,7 @@
 				<module>data-reactive</module>
 				<module>vault-resttemplate</module>
 				<module>vault-webclient</module>
+				<module>session</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -84,6 +85,7 @@
 				<module>data-reactive</module>
 				<module>vault-resttemplate</module>
 				<module>vault-webclient</module>
+				<module>session</module>
 			</modules>
 		</profile>
 	</profiles>
