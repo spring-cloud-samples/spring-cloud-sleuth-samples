@@ -17,6 +17,7 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunctions;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
@@ -42,7 +43,9 @@ class Config {
 	// You must register WebClient as a bean!
 	@Bean
 	WebClient webClient(@Value("${url:http://localhost:7110}") String url) {
-		return WebClient.builder().baseUrl(url).build();
+		return WebClient.builder()
+				.filter(ExchangeFilterFunctions.basicAuthentication("marcin", "marcin"))
+				.baseUrl(url).build();
 	}
 }
 

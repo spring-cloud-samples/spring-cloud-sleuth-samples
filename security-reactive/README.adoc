@@ -1,0 +1,5 @@
+:branch: 3.1.x
+
+= Spring Security Reactive Integration
+
+We're hooking in our own filter that adds security tags.
