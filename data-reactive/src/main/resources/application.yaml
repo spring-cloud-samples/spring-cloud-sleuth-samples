@@ -11,3 +11,4 @@ spring:
 # For tests
 logging.level.org.springframework.cloud.sleuth: DEBUG
 logging.level.com.example.sleuthsamples: DEBUG
+logging.level.reactor: DEBUG

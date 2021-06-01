@@ -1,0 +1,13 @@
+server:
+  port: 7250
+
+spring:
+  application:
+    name: security
+  security.user:
+    name: marcin
+    password: marcin
+    roles: manager
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG

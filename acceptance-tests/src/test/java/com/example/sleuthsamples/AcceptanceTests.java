@@ -162,4 +162,30 @@ class AcceptanceTests extends AcceptanceTestsBase {
 		// then
 		assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(appId, "deployer", 9);
 	}
+
+	@Test
+	void should_pass_tracing_context_from_rest_template_to_security_mvc(TestInfo testInfo) {
+		// given
+		int port = SocketUtils.findAvailableTcpPort();
+		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "security", port));
+
+		// when
+		String consumerId = deploy(testInfo, "resttemplate", Map.of("url", "http://localhost:" + port));
+
+		// then
+		assertThatTraceIdGotPropagated(producerId, consumerId);
+	}
+
+	@Test
+	void should_pass_tracing_context_from_web_client_to_security_webflux(TestInfo testInfo) {
+		// given
+		int port = SocketUtils.findAvailableTcpPort();
+		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "security-reactive", port));
+
+		// when
+		String consumerId = deploy(testInfo, "webclient", Map.of("url", "http://localhost:" + port));
+
+		// then
+		assertThatTraceIdGotPropagated(producerId, consumerId);
+	}
 }

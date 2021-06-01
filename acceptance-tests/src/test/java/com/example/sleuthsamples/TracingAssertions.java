@@ -34,32 +34,41 @@ class TracingAssertions {
 	}
 
 	void assertThatTraceIdGotPropagated(String... appIds) {
-		Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
-				.atMost(120, TimeUnit.SECONDS).untilAsserted(() -> {
-			AtomicBoolean consumerPresent = new AtomicBoolean();
-			AtomicBoolean producerPresent = new AtomicBoolean();
-			List<String> traceIds = Arrays.stream(appIds).map(this.projectDeployer::getLog)
-					.flatMap(s -> Arrays.stream(s.split(System.lineSeparator())))
-					.filter(s -> s.contains("ACCEPTANCE_TEST")).map(s -> {
-						Matcher matcher = tracePattern.matcher(s);
-						if (matcher.matches()) {
-							if (s.contains(expectedConsumerText)) {
-								consumerPresent.set(true);
+		try {
+			Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
+					.atMost(120, TimeUnit.SECONDS).untilAsserted(() -> {
+				AtomicBoolean consumerPresent = new AtomicBoolean();
+				AtomicBoolean producerPresent = new AtomicBoolean();
+				List<String> traceIds = Arrays.stream(appIds).map(this.projectDeployer::getLog)
+						.flatMap(s -> Arrays.stream(s.split(System.lineSeparator())))
+						.filter(s -> s.contains("ACCEPTANCE_TEST")).map(s -> {
+							Matcher matcher = tracePattern.matcher(s);
+							if (matcher.matches()) {
+								if (s.contains(expectedConsumerText)) {
+									consumerPresent.set(true);
+								}
+								else if (s.contains(expectedProducerText)) {
+									producerPresent.set(true);
+								}
+								return matcher.group(1);
 							}
-							else if (s.contains(expectedProducerText)) {
-								producerPresent.set(true);
-							}
-							return matcher.group(1);
-						}
-						return null;
-					}).filter(Objects::nonNull)
-					.distinct()
-					.collect(Collectors.toList());
-			log.info("Found the following trace id {}", traceIds);
-			then(traceIds).as("TraceId should have only one value").hasSize(1);
-			then(producerPresent).as("Producer code must be called").isTrue();
-			then(consumerPresent).as("Consumer code must be called").isTrue();
-		});
+							return null;
+						}).filter(Objects::nonNull)
+						.distinct()
+						.collect(Collectors.toList());
+				log.info("Found the following trace id {}", traceIds);
+				then(traceIds).as("TraceId should have only one value").hasSize(1);
+				then(producerPresent).as("Producer code must be called").isTrue();
+				then(consumerPresent).as("Consumer code must be called").isTrue();
+			});
+		} catch (AssertionError error) {
+			log.error("Assertion failed. Will print all logs");
+			Arrays.stream(appIds).forEach(id -> {
+				String logs = this.projectDeployer.getLog(id);
+				log.info("Logs of application with id [" + id + "] \n\n\n" + logs + "\n\n\n");
+			});
+			throw error;
+		}
 	}
 
 	void assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(String appId, String springApplicationName, int minNumberOfOccurrences) {

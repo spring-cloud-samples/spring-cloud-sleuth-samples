@@ -1,5 +1,8 @@
 package com.example.sleuthsamples;
 
+import java.nio.charset.Charset;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +16,9 @@ import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -61,9 +67,21 @@ class RestTemplateService {
 		Span span = this.tracer.nextSpan().name("rest-template");
 		try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
 			log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", this.tracer.currentSpan().context().traceId());
-			return this.restTemplate.getForObject(url, String.class);
-		} finally {
+			return this.restTemplate.exchange
+					(url, HttpMethod.GET, new HttpEntity<String>(createBasicAuthHeaders()), String.class).getBody();
+		}
+		finally {
 			span.end();
 		}
+	}
+
+	private HttpHeaders createBasicAuthHeaders() {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		String auth = "marcin:marcin";
+		byte[] encodedAuth = Base64.encodeBase64(
+				auth.getBytes(Charset.forName("US-ASCII")));
+		String authHeader = "Basic " + new String(encodedAuth);
+		httpHeaders.set("Authorization", authHeader);
+		return httpHeaders;
 	}
 }
