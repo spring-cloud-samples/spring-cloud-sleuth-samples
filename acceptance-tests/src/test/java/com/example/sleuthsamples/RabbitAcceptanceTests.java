@@ -26,9 +26,9 @@ class RabbitAcceptanceTests extends AcceptanceTestsBase {
 	static RabbitMQContainer rabbit = new RabbitMQContainer("rabbitmq:3.7.25-management-alpine");
 
 	@Test
-	void should_pass_tracing_context_from_stream_producer_to_consumer(TestInfo testInfo) {
+	void should_pass_tracing_context_from_stream_producer_to_consumer(TestInfo testInfo) throws Exception {
 		// given
-		String consumerId = deploy(testInfo, "stream-consumer", rabbitMqPort());
+		String consumerId = wait10seconds(() -> deploy(testInfo, "stream-consumer", rabbitMqPort()));
 
 		// when
 		String producerId = deploy(testInfo, "stream-producer", rabbitMqPort());
@@ -38,9 +38,9 @@ class RabbitAcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
-	void should_pass_tracing_context_from_stream_reactive_producer_to_reactive_consumer(TestInfo testInfo) {
+	void should_pass_tracing_context_from_stream_reactive_producer_to_reactive_consumer(TestInfo testInfo) throws Exception {
 		// given
-		String consumerId = deploy(testInfo, "stream-reactive-consumer", rabbitMqPort());
+		String consumerId = wait10seconds(() -> deploy(testInfo, "stream-reactive-consumer", rabbitMqPort()));
 
 		// when
 		String producerId = deploy(testInfo, "stream-reactive-producer", rabbitMqPort());
