@@ -54,6 +54,8 @@
 				<module>data-reactive</module>
 				<module>vault-resttemplate</module>
 				<module>vault-webclient</module>
+				<module>cassandra</module>
+				<module>cassandra-reactive</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -84,6 +86,8 @@
 				<module>data-reactive</module>
 				<module>vault-resttemplate</module>
 				<module>vault-webclient</module>
+				<module>cassandra</module>
+				<module>cassandra-reactive</module>
 			</modules>
 		</profile>
 	</profiles>
