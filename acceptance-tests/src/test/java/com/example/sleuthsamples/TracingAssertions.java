@@ -61,8 +61,8 @@ class TracingAssertions {
 				then(producerPresent).as("Producer code must be called").isTrue();
 				then(consumerPresent).as("Consumer code must be called").isTrue();
 			});
-		} catch (AssertionError er) {
-			log.error("One of the assertions has failed! Will print out the application logs\n\n");
+		} catch (Throwable er) {
+			log.error("Something went wrong! Will print out the application logs\n\n");
 			Arrays.stream(appIds).forEach(id -> log.error("App with id [" + id + "]\n\n" + this.projectDeployer.getLog(id)));
 			throw er;
 		}
