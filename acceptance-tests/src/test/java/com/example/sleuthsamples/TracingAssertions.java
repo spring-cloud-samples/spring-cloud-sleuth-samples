@@ -90,7 +90,7 @@ class TracingAssertions {
 				then(traceIds).as("TraceId should have only one value").hasSize(1);
 				then(counter).as("There should be at least X number of times").hasValueGreaterThanOrEqualTo(minNumberOfOccurrences);
 			});
-		} catch (AssertionError er) {
+		} catch (Throwable er) {
 			log.error("One of the assertions has failed! Will print out the application logs");
 			log.error(this.projectDeployer.getLog(appId));
 			throw er;
