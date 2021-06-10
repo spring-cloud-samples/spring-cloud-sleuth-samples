@@ -71,7 +71,10 @@ class ProjectDeployer {
 			log.info("Application with id [{}] has started successfully", app);
 			return app.get();
 		}
-		catch (AssertionError er) {
+		catch (Exception exception) {
+			throw new IllegalStateException(exception);
+		}
+		catch (Throwable er) {
 			if (app.get() != null) {
 				String id = app.get();
 				log.error("Application with id [" + id + "] failed to start. These are its logs\n\n");
@@ -80,9 +83,6 @@ class ProjectDeployer {
 			}
 			log.error("The app failed to start and no application id was passed - can't fetch the logs");
 			throw er;
-		}
-		catch (Exception exception) {
-			throw new IllegalStateException(exception);
 		}
 	}
 
