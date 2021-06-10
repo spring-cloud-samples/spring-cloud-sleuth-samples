@@ -58,7 +58,7 @@ class ProjectDeployer {
 		return rebuildAndDeploy(testInfo, appName, request);
 	}
 
-	String waitUntilStarted(Callable<String> callable) {
+	String waitUntilStarted(Callable<String> callable) throws Exception {
 		AtomicReference<String> app = new AtomicReference<>();
 		try {
 			app.set(callable.call());
@@ -70,9 +70,6 @@ class ProjectDeployer {
 			});
 			log.info("Application with id [{}] has started successfully", app);
 			return app.get();
-		}
-		catch (Exception exception) {
-			throw new IllegalStateException(exception);
 		}
 		catch (Throwable er) {
 			if (app.get() != null) {
