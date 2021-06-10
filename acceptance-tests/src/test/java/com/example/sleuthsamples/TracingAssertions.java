@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -33,31 +34,37 @@ class TracingAssertions {
 	}
 
 	void assertThatTraceIdGotPropagated(String... appIds) {
-		Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
-				.atMost(120, TimeUnit.SECONDS).untilAsserted(() -> {
-			AtomicBoolean consumerPresent = new AtomicBoolean();
-			AtomicBoolean producerPresent = new AtomicBoolean();
-			List<String> traceIds = Arrays.stream(appIds).map(this.projectDeployer::getLog)
-					.flatMap(s -> Arrays.stream(s.split(System.lineSeparator())))
-					.filter(s -> s.contains("ACCEPTANCE_TEST")).map(s -> {
-						Matcher matcher = tracePattern.matcher(s);
-						if (matcher.matches()) {
-							if (s.contains(expectedConsumerText)) {
-								consumerPresent.set(true);
+		try {
+			Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
+					.atMost(120, TimeUnit.SECONDS).untilAsserted(() -> {
+				AtomicBoolean consumerPresent = new AtomicBoolean();
+				AtomicBoolean producerPresent = new AtomicBoolean();
+				List<String> traceIds = Arrays.stream(appIds).map(this.projectDeployer::getLog)
+						.flatMap(s -> Arrays.stream(s.split(System.lineSeparator())))
+						.filter(s -> s.contains("ACCEPTANCE_TEST")).map(s -> {
+							Matcher matcher = tracePattern.matcher(s);
+							if (matcher.matches()) {
+								if (s.contains(expectedConsumerText)) {
+									consumerPresent.set(true);
+								}
+								else if (s.contains(expectedProducerText)) {
+									producerPresent.set(true);
+								}
+								return matcher.group(1);
 							}
-							else if (s.contains(expectedProducerText)) {
-								producerPresent.set(true);
-							}
-							return matcher.group(1);
-						}
-						return null;
-					}).filter(Objects::nonNull)
-					.distinct()
-					.collect(Collectors.toList());
-			log.info("Found the following trace id {}", traceIds);
-			then(traceIds).as("TraceId should have only one value").hasSize(1);
-			then(producerPresent).as("Producer code must be called").isTrue();
-			then(consumerPresent).as("Consumer code must be called").isTrue();
-		});
+							return null;
+						}).filter(Objects::nonNull)
+						.distinct()
+						.collect(Collectors.toList());
+				log.info("Found the following trace id {}", traceIds);
+				then(traceIds).as("TraceId should have only one value").hasSize(1);
+				then(producerPresent).as("Producer code must be called").isTrue();
+				then(consumerPresent).as("Consumer code must be called").isTrue();
+			});
+		} catch (AssertionError er) {
+			log.error("One of the assertions has failed! Will print out the application logs\n\n");
+			Arrays.stream(appIds).forEach(id -> log.error("App with id [" + id + "]\n\n" + this.projectDeployer.getLog(id)));
+			throw er;
+		}
 	}
 }
