@@ -1,0 +1,7 @@
+:branch: 3.1.x
+
+= Spring Cloud Task
+
+We're wrapping `TaskExecutionListener`s and `CommandLineRunner` and `ApplicationRunner`.
+
+You can check the instrumentation code, starting from the code in the package https://github.com/spring-cloud/spring-cloud-sleuth/tree/{branch}/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/task/[here] and the instrumentation configuration code https://github.com/spring-cloud/spring-cloud-sleuth/blob/master/spring-cloud-sleuth-autoconfigure/src/main/java/org/springframework/cloud/sleuth/autoconfig/instrument/task/TraceTaskAutoConfiguration.java[here].

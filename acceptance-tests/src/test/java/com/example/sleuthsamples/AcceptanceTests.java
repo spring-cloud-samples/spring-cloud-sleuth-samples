@@ -78,11 +78,88 @@ class AcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
+	void should_pass_tracing_context_with_batch(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "batch");
+
+		// then
+		assertThatTraceIdGotPropagated(appId);
+	}
+
+	@Test
+	void should_pass_tracing_context_with_data(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "data");
+
+		// then
+		assertThatTraceIdGotPropagated(appId);
+	}
+
+	@Test
+	void should_pass_tracing_context_with_data_reactive(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "data-reactive");
+
+		// then
+		assertThatTraceIdGotPropagated(appId);
+	}
+
+	@Test
 	void should_pass_tracing_context_with_circuit_breaker(TestInfo testInfo) {
 		// when
 		String appId = deploy(testInfo, "circuitbreaker");
 
 		// then
 		assertThatTraceIdGotPropagated(appId);
+	}
+
+	@Test
+	void should_pass_tracing_context_from_rsocket(TestInfo testInfo) throws Exception {
+		// given
+		int port = SocketUtils.findAvailableTcpPort();
+		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "rsocket-server", port));
+
+		// when
+		String consumerId = deploy(testInfo, "rsocket-client", Map.of("url", "ws://localhost:" + port + "/rsocket"));
+
+		// then
+		assertThatTraceIdGotPropagated(producerId, consumerId);
+	}
+
+	@Test
+	void should_pass_tracing_context_with_reactive_circuit_breaker(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "circuitbreaker-reactive");
+
+		// then
+		assertThatTraceIdGotPropagated(appId);
+	}
+
+	@Test
+	void should_pass_tracing_context_with_spring_cloud_task(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "task");
+
+		// then
+		assertThatTraceIdGotPropagated(appId);
+	}
+
+	@Test
+	void should_pass_tracing_context_with_config_server(TestInfo testInfo) throws Exception {
+		// when
+		int port = SocketUtils.findAvailableTcpPort();
+		String appId = waitUntilStarted(() -> deployWebApp(testInfo, "config-server", port));
+
+		// then
+		assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(appId, "config-server", 2);
+	}
+
+	@Test
+	void should_pass_tracing_context_with_deployer(TestInfo testInfo) {
+		// when
+		String appId = deploy(testInfo, "deployer");
+
+		// then
+		assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(appId, "deployer", 9);
 	}
 }

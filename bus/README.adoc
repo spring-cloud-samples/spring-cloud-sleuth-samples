@@ -1,3 +1,5 @@
+:branch: 3.1.x
+
 = Spring Cloud Bus
 
 We're using Spring Cloud Stream for Bus messaging. You can check out the corresponding sample for more information.

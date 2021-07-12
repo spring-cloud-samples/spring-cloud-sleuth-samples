@@ -1,5 +1,7 @@
+:branch: 3.1.x
+
 = Spring Cloud Stream Reactive integration
 
-For Spring Cloud Stream to work with the Reactive approach you need to turn on the `spring.sleuth.integration.enabled` property to `true` to use the Spring Integration instrumentation instead of the Spring Cloud Function one. You can read more about that instrumentation under the `integration` module.
+For Spring Cloud Stream to work with the Reactive approach you need to turn on the `spring.cloud.sleuth.integration.enabled` property to `true` to use the Spring Integration instrumentation instead of the Spring Cloud Function one. You can read more about that instrumentation under the `integration` module.
 
 When defining the consumer bean of `Consumer<Flux>` type, remember to call `subscribe()` at the end of your flux. Otherwise you'll get the `Dispatcher has no subscribers` error.

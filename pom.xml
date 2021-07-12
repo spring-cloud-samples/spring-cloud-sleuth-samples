@@ -42,7 +42,20 @@
 				<module>openfeign</module>
 				<module>gateway</module>
 				<module>circuitbreaker</module>
+				<module>circuitbreaker-reactive</module>
+				<module>task</module>
+				<module>config-server</module>
+				<module>batch</module>
 				<module>bus</module>
+				<module>deployer</module>
+				<module>rsocket-server</module>
+				<module>rsocket-client</module>
+				<module>data</module>
+				<module>data-reactive</module>
+				<module>vault-resttemplate</module>
+				<module>vault-webclient</module>
+				<module>cassandra</module>
+				<module>cassandra-reactive</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -51,17 +64,30 @@
 			<modules>
 				<module>resttemplate</module>
 				<module>mvc</module>
+				<module>integration</module>
 				<module>webflux</module>
 				<module>webclient</module>
-				<module>integration</module>
 				<module>stream-producer</module>
 				<module>stream-consumer</module>
 				<module>stream-reactive-producer</module>
 				<module>stream-reactive-consumer</module>
+				<module>openfeign</module>
 				<module>gateway</module>
 				<module>circuitbreaker</module>
+				<module>circuitbreaker-reactive</module>
+				<module>task</module>
+				<module>config-server</module>
+				<module>batch</module>
 				<module>bus</module>
-				<module>openfeign</module>
+				<module>deployer</module>
+				<module>rsocket-server</module>
+				<module>rsocket-client</module>
+				<module>data</module>
+				<module>data-reactive</module>
+				<module>vault-resttemplate</module>
+				<module>vault-webclient</module>
+				<module>cassandra</module>
+				<module>cassandra-reactive</module>
 			</modules>
 		</profile>
 	</profiles>

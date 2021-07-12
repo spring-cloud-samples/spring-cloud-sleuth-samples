@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: data-reactive
+  sleuth:
+    reactor:
+      instrumentation-type: decorate_queues
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
+  datasource:
+    url: jdbc:h2:mem:my-h2-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG
+logging.level.com.example.sleuthsamples: DEBUG

@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: circuitbreaker-reactive
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG

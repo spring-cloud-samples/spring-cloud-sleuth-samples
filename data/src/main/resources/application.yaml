@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: data
+  datasource:
+    url: jdbc:h2:mem:my-h2-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+  sleuth:
+    jdbc:
+      # enable logging for datasource-proxy
+      datasource-proxy:
+        query:
+          enable-logging: true
+      # enable logging for p6spy
+      p6spy:
+          enable-logging: true
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG

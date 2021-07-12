@@ -32,6 +32,8 @@ public class WebClientApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		this.webClientService.call().block(Duration.ofSeconds(5));
+		// To ensure that the spans got successfully reported
+		Thread.sleep(500);
 	}
 }
 
@@ -58,7 +60,7 @@ class WebClientService {
 	}
 
 	Mono<String> call() {
-		Span nextSpan = this.tracer.nextSpan();
+		Span nextSpan = this.tracer.nextSpan().name("client");
 		return Mono.just(nextSpan)
 				.doOnNext(span -> this.tracer.withSpan(span.start()))
 				.flatMap(span -> {

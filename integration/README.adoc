@@ -1,3 +1,5 @@
+:branch: 3.1.x
+
 = Spring Integratoin Sleuth Integration
 
 We're using a `ChannelInterceptor` called `org.springframework.cloud.sleuth.instrument.messaging.TracingChannelInterceptor`.

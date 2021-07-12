@@ -58,7 +58,7 @@ class RestTemplateService {
 	}
 
 	String call(String url) {
-		Span span = this.tracer.nextSpan();
+		Span span = this.tracer.nextSpan().name("rest-template");
 		try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
 			log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", this.tracer.currentSpan().context().traceId());
 			return this.restTemplate.getForObject(url, String.class);

@@ -67,4 +67,33 @@ class TracingAssertions {
 			throw er;
 		}
 	}
+
+	void assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(String appId, String springApplicationName, int minNumberOfOccurrences) {
+		Pattern pattern = Pattern.compile("^.*\\[" + springApplicationName + ",([a-z|0-9]+?),([a-z|0-9]+?)].*$");
+		try {
+			Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
+					.atMost(120, TimeUnit.SECONDS).untilAsserted(() -> {
+				AtomicInteger counter = new AtomicInteger();
+				List<String> traceIds = Arrays.stream(this.projectDeployer.getLog(appId)
+						.split(System.lineSeparator()))
+						.map(s -> {
+							Matcher matcher = pattern.matcher(s);
+							if (matcher.matches()) {
+								counter.incrementAndGet();
+								return matcher.group(1);
+							}
+							return null;
+						}).filter(Objects::nonNull)
+						.distinct()
+						.collect(Collectors.toList());
+				log.info("Found the trace id {} [{}] times. Min required number [{}] ", traceIds, counter.get(), minNumberOfOccurrences);
+				then(traceIds).as("TraceId should have only one value").hasSize(1);
+				then(counter).as("There should be at least X number of times").hasValueGreaterThanOrEqualTo(minNumberOfOccurrences);
+			});
+		} catch (Throwable er) {
+			log.error("One of the assertions has failed! Will print out the application logs");
+			log.error(this.projectDeployer.getLog(appId));
+			throw er;
+		}
+	}
 }
