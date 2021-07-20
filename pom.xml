@@ -56,6 +56,8 @@
 				<module>vault-webclient</module>
 				<module>cassandra</module>
 				<module>cassandra-reactive</module>
+				<module>baggage-producer</module>
+				<module>baggage-consumer</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -88,6 +90,9 @@
 				<module>vault-webclient</module>
 				<module>cassandra</module>
 				<module>cassandra-reactive</module>
+				<module>baggage-producer</module>
+				<module>baggage-consumer</module>
+				<module>openfeign</module>
 			</modules>
 		</profile>
 	</profiles>

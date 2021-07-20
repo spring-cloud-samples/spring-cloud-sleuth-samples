@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: baggage-producer
+  sleuth:
+    baggage:
+      remote-fields: mybaggage, myremotefield
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG
