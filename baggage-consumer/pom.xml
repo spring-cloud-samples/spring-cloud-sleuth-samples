@@ -3,7 +3,7 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.example.sleuthsamples</groupId>
-	<artifactId>bus</artifactId>
+	<artifactId>baggage-consumer</artifactId>
 	<version>1.0.0-SLEUTH</version>
 
 	<parent>
@@ -15,14 +15,20 @@
 
 	<properties>
 		<spring-cloud.version>2020.0.4-SNAPSHOT</spring-cloud.version>
+		<wiremock.version>2.29.1</wiremock.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.tomakehurst</groupId>
+			<artifactId>wiremock-jre8-standalone</artifactId>
+			<version>${wiremock.version}</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>

@@ -43,6 +43,8 @@
 				<module>gateway</module>
 				<module>circuitbreaker</module>
 				<module>bus</module>
+				<module>baggage-producer</module>
+				<module>baggage-consumer</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -61,6 +63,8 @@
 				<module>gateway</module>
 				<module>circuitbreaker</module>
 				<module>bus</module>
+				<module>baggage-producer</module>
+				<module>baggage-consumer</module>
 				<module>openfeign</module>
 			</modules>
 		</profile>

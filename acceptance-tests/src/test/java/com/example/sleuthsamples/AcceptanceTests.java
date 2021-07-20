@@ -85,4 +85,17 @@ class AcceptanceTests extends AcceptanceTestsBase {
 		// then
 		assertThatTraceIdGotPropagated(appId);
 	}
+
+	@Test
+	void should_pass_baggage_and_remote_fields(TestInfo testInfo) throws Exception {
+		// given
+		int port = SocketUtils.findAvailableTcpPort();
+		String consumerId = waitUntilStarted(() -> deployWebApp(testInfo, "baggage-consumer", port));
+
+		// when
+		String producerId = deploy(testInfo, "baggage-producer", Map.of("url", "http://localhost:" + port));
+
+		// then
+		assertThatTraceIdGotPropagated(producerId, consumerId);
+	}
 }
