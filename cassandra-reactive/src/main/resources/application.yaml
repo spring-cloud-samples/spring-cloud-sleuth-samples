@@ -1,10 +1,9 @@
 spring:
   application:
     name: cassandra-reactive
-# TODO: Breaks context propagation if set
-#  sleuth:
-#    reactor:
-#      instrumentation-type: decorate_queues
+  sleuth:
+    reactor:
+      instrumentation-type: decorate_queues
 
 spring.data.cassandra:
   keyspace-name: example
