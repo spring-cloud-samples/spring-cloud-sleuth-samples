@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: mongo-reactive
+  sleuth:
+    reactor:
+#      instrumentation-type: decorate_queues
+      instrumentation-type: decorate_on_each
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG
