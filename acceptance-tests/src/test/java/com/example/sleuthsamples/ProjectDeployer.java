@@ -115,7 +115,7 @@ class ProjectDeployer {
 		return new AppDeploymentRequest(appDefinition, new MavenResource.Builder()
 				.groupId("com.example.sleuthsamples")
 				.artifactId(appName)
-				.version("1.0.0-SLEUTH")
+				.version("0.0.1-SNAPSHOT")
 				.build());
 	}
 
