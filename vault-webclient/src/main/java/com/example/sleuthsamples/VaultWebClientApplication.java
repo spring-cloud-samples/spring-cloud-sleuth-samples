@@ -24,22 +24,29 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
-public class VaultWebClientApplication implements CommandLineRunner {
-
-	private static final Logger log = LoggerFactory.getLogger(VaultWebClientApplication.class);
+public class VaultWebClientApplication {
 
 	public static void main(String... args) {
 		new SpringApplicationBuilder(VaultWebClientApplication.class).web(WebApplicationType.NONE).run(args);
 	}
+}
 
-	@Autowired
-	WebClientService webClientService;
+@Configuration
+class Config {
 
-	@Override
-	public void run(String... args) throws Exception {
-		this.webClientService.call().block(Duration.ofSeconds(5));
-		// To ensure that the spans got successfully reported
-		Thread.sleep(500);
+	private static final Logger log = LoggerFactory.getLogger(Config.class);
+
+	@Bean
+	CommandLineRunner myCommandLineRunner(WebClientService webClientService) {
+		return args -> {
+			this.webClientService.call().block(Duration.ofSeconds(5));
+			// To ensure that the spans got successfully reported
+			try {
+				Thread.sleep(500);
+			} catch (Exception ex) {
+
+			}
+		};
 	}
 
 	@Bean
