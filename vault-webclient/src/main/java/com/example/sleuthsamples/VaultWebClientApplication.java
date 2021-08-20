@@ -39,7 +39,7 @@ class Config {
 	@Bean
 	CommandLineRunner myCommandLineRunner(WebClientService webClientService) {
 		return args -> {
-			this.webClientService.call().block(Duration.ofSeconds(5));
+			webClientService.call().block(Duration.ofSeconds(5));
 			// To ensure that the spans got successfully reported
 			try {
 				Thread.sleep(500);
