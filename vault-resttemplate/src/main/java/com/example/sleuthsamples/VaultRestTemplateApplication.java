@@ -18,19 +18,11 @@ import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.VaultResponse;
 
 @SpringBootApplication
-public class VaultRestTemplateApplication implements CommandLineRunner {
+public class VaultRestTemplateApplication {
 	private static final Logger log = LoggerFactory.getLogger(VaultRestTemplateApplication.class);
 
 	public static void main(String... args) {
 		new SpringApplicationBuilder(VaultRestTemplateApplication.class).web(WebApplicationType.NONE).run(args);
-	}
-
-	@Autowired
-	RestTemplateService restTemplateService;
-
-	@Override
-	public void run(String... args) throws Exception {
-		this.restTemplateService.call();
 	}
 
 	// This bean is just for acceptance tests - you don't need it in your code
@@ -40,6 +32,11 @@ public class VaultRestTemplateApplication implements CommandLineRunner {
 			log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from producer", tracer.currentSpan().context().traceId());
 			return execution.execute(request, body);
 		});
+	}
+
+	@Bean
+	CommandLineRunner myCommandLineRunner(RestTemplateService restTemplateService) {
+		return args -> restTemplateService.call();
 	}
 }
 
