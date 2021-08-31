@@ -16,8 +16,15 @@
 
 package com.example.sleuthsamples;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.context.SecurityContextChangedListener;
 
 /**
  * Sample app to demonstrate instrumentation of Spring Security.
@@ -26,7 +33,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class SpringSecurityApplication {
+
+	private static final Logger log = LoggerFactory.getLogger(SecurityController.class);
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringSecurityApplication.class, args);
+	}
+
+	// This only needed for tests - you don't need this bean
+	@Bean
+	SecurityContextChangedListener testSecurityContextChangedListener(BeanFactory beanFactory) {
+		return event -> {
+			Tracer tracer = beanFactory.getBean(Tracer.class);
+			log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from producer", tracer.currentSpan().context().traceId());
+		};
 	}
 }

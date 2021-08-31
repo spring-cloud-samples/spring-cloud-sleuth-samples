@@ -94,7 +94,6 @@
 				<module>cassandra-reactive</module>
 				<module>baggage-producer</module>
 				<module>baggage-consumer</module>
-				<module>openfeign</module>
 			</modules>
 		</profile>
 	</profiles>

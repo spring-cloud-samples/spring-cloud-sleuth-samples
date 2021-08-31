@@ -175,4 +175,17 @@ class AcceptanceTests extends AcceptanceTestsBase {
 		// then
 		assertThatTraceIdGotPropagated(producerId, consumerId);
 	}
+
+	@Test
+	void should_pass_tracing_context_from_rest_template_to_security(TestInfo testInfo) throws Exception {
+		// given
+		int port = SocketUtils.findAvailableTcpPort();
+		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "security", port));
+
+		// when
+		String consumerId = deploy(testInfo, "resttemplate", Map.of("url", "http://localhost:" + port + "/api/hello"));
+
+		// then
+		assertThatTraceIdGotPropagated(producerId, consumerId);
+	}
 }

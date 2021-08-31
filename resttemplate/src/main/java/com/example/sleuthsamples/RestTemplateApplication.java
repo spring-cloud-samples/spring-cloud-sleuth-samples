@@ -9,11 +9,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
@@ -38,9 +40,12 @@ public class RestTemplateApplication implements CommandLineRunner {
 @Configuration
 class Config {
 	// You must register RestTemplate as a bean!
+	// We're using username and password in case you need basic authentication
 	@Bean
-	RestTemplate restTemplate() {
-		return new RestTemplate();
+	RestTemplate restTemplate(@Value("${username:user}") String username, @Value("${password:password}") String password) {
+		return new RestTemplateBuilder()
+				.basicAuthentication(username, password)
+				.build();
 	}
 }
 

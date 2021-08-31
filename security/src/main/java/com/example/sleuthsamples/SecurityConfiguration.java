@@ -18,6 +18,11 @@ package com.example.sleuthsamples;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,6 +43,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
 	// TODO: remove this once Spring Boot autoconfigures it
 	SecurityConfiguration(List<SecurityContextChangedListener> securityContextChangedListeners) {
 		securityContextChangedListeners.forEach(SecurityContextHolder::addListener);
