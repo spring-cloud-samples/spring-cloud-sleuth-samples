@@ -14,27 +14,48 @@ Run Zipkin
 $ docker run -d -p 9411:9411 openzipkin/zipkin
 ```
 
-Build the apps with the `zipkin` profile turned on.
+Build the apps with the `default` and `zipkin` profile turned on. `default` will add Sleuth with Brave on the classpath.
 
 . All projects and acceptance tests
 ```bash
-$ ./mvnw clean install -Pzipkin
+$ ./mvnw clean install -Pdefault,zipkin
 ```
 
 . Build one project
 ```bash
-$ ./mvnw clean install -Pzipkin -pl task
+$ ./mvnw clean install -Pdefault,zipkin -pl task
 $ # Run one app
 $ java -jar task/target/task*.jar 
 ```
 
 . Run one project (example for task)
 ```bash
-$ ./mvnw -Pzipkin -pl task spring-boot:run
+$ ./mvnw -Pdefault,zipkin -pl task spring-boot:run
 ```
 
-If you want to run the project from IDE remember to tick the `zipkin` profile there too.
+If you want to run the project from IDE remember to tick the `default` and `zipkin` profiles there too.
 
+## Using OpenTelemetry
+
+Instead of using the `default` profile please use the `otel` profile. So if you want to run `otel` based tracing with zipkin you need to build the
+application with both `otel` and `zipkin` profiles. Example:
+
+. All projects and acceptance tests
+```bash
+$ ./mvnw clean install -Potel,zipkin
+```
+
+. Build one project
+```bash
+$ ./mvnw clean install -Potel,zipkin -pl task
+$ # Run one app
+$ java -jar task/target/task*.jar 
+```
+
+. Run one project (example for task)
+```bash
+$ ./mvnw -Potel,zipkin -pl task spring-boot:run
+```
 
 # FAQ
 
