@@ -27,8 +27,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.context.ListeningSecurityContextHolderStrategy;
 import org.springframework.security.core.context.SecurityContextChangedListener;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -46,7 +48,9 @@ public class SecurityConfiguration {
 
 	// TODO: remove this once Spring Boot autoconfigures it
 	SecurityConfiguration(List<SecurityContextChangedListener> securityContextChangedListeners) {
-		securityContextChangedListeners.forEach(SecurityContextHolder::addListener);
+		SecurityContextHolderStrategy strategy = new ListeningSecurityContextHolderStrategy(
+				SecurityContextHolder.getContextHolderStrategy(), securityContextChangedListeners);
+		SecurityContextHolder.setContextHolderStrategy(strategy);
 	}
 
 	@Bean
