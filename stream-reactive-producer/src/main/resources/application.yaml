@@ -1,15 +1,16 @@
 spring:
   application:
     name: stream-reactive-producer
-  sleuth:
-    integration:
-      # This needs to be ON for reactive stream to work
-      enabled: true
 
 # streambridge -> channelreactivedestination-input -> function bean -> channelreactivedestination
-spring.cloud.stream.bindings.channel-in-0.destination: channelreactivedestination-input
-spring.cloud.stream.bindings.channel-out-0.destination: channelreactivedestination
+spring.cloud.stream.bindings.tracingFunction-in-0.destination: channelreactivedestination-input
+spring.cloud.stream.bindings.tracingFunction-out-0.destination: channelreactivedestination
 
+spring.cloud.stream.bindings.supplier-out-0.destination: supplier
+spring.cloud.stream.bindings.stringSupplier-out-0.destination: stringSupplier
+
+spring.cloud.function.definition: tracingFunction
+# spring.cloud.function.definition: tracingFunction;supplier;stringSupplier
 
 # For tests
 logging.level.org.springframework.cloud.sleuth: DEBUG

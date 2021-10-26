@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.Message;
 
 @SpringBootApplication
 public class StreamReactiveConsumerApplication implements CommandLineRunner {
@@ -24,15 +25,22 @@ public class StreamReactiveConsumerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		log.warn("Remember about setting <spring.cloud.sleuth.integration.enabled=true> property for Stream Reactive and Sleuth to work");
 		log.warn("Remember about calling <.subscribe()> at the end of your Consumer<Flux> bean!");
 	}
 
 	@Bean
-	Consumer<Flux<String>> channel(Tracer tracer) {
+	Consumer<Flux<Message<String>>> channel(Tracer tracer) {
 		// For the reactive consumer remember to call "subscribe()" at the end, otherwise
 		// you'll get the "Dispatcher has no subscribers" error
-		return i -> i.doOnNext(s ->
-				log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", tracer.currentSpan().context().traceId())).subscribe();
+		return i -> i
+					.doOnNext(s ->
+						log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", tracer.currentSpan().context().traceId()))
+					// You must finish the span yourself and clear the tracing context like presented below. 
+					// Otherwise you will be missing out the span that wraps the function execution.
+					.doOnNext(s -> {
+						tracer.currentSpan().end();
+						tracer.withSpan(null);
+					})
+					.subscribe();
 	}
 }
