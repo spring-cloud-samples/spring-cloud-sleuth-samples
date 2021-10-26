@@ -1,8 +1,6 @@
 package com.example.sleuthsamples;
 
 import java.time.Duration;
-import java.util.Map;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +14,6 @@ import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.TraceContext;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.cloud.sleuth.Tracer.SpanInScope;
-import org.springframework.cloud.sleuth.instrument.reactor.ReactorSleuth;
 import org.springframework.context.annotation.Bean;
 
 import com.mongodb.RequestContext;
@@ -24,7 +21,6 @@ import com.mongodb.event.CommandListener;
 import com.mongodb.event.CommandSucceededEvent;
 
 import reactor.core.publisher.Mono;
-import reactor.util.context.ContextView;
 
 @SpringBootApplication
 public class ReactiveMongoApplication {
@@ -58,6 +54,7 @@ public class ReactiveMongoApplication {
 
 }
 
+//This is for tests only. You don't need this in your production code.
 class TestMongoClientSettingsBuilderCustomizer implements MongoClientSettingsBuilderCustomizer {
 
 	private static final Logger log = LoggerFactory.getLogger(TestMongoClientSettingsBuilderCustomizer.class);
@@ -81,7 +78,10 @@ class TestMongoClientSettingsBuilderCustomizer implements MongoClientSettingsBui
 				if (requestContext == null) {
 					return;
 				}
-				Span parent = ReactorSleuth.spanFromContext(tracer, currentTraceContext, context(requestContext));
+				Span parent = spanFromContext(tracer, currentTraceContext, requestContext);
+				if (parent == null) {
+					return;
+				}
 				try (SpanInScope withSpan = tracer.withSpan(parent)) {
 					log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from producer",
 							tracer.currentSpan().context().traceId());
@@ -89,34 +89,25 @@ class TestMongoClientSettingsBuilderCustomizer implements MongoClientSettingsBui
 			}
 		});
 	}
-
-	private ContextView context(RequestContext requestContext) {
-		return new ContextView() {
-			@Override
-			public <T> T get(Object key) {
-				return requestContext.get(key);
+	
+	private static Span spanFromContext(Tracer tracer, CurrentTraceContext currentTraceContext, RequestContext context) {
+		Span span = context.getOrDefault(Span.class, null);
+		if (span != null) {
+			if (log.isDebugEnabled()) {
+				log.debug("Found a span in mongo context [" + span + "]");
 			}
-
-			@Override
-			public <T> T getOrDefault(Object key, T defaultValue) {
-				return requestContext.getOrDefault(key, defaultValue);
+			return span;
+		}
+		TraceContext traceContext = context.getOrDefault(TraceContext.class, null);
+		if (traceContext != null) {
+			try (CurrentTraceContext.Scope scope = currentTraceContext.maybeScope(traceContext)) {
+				if (log.isDebugEnabled()) {
+					log.debug("Found a trace context in mongo context [" + traceContext + "]");
+				}
+				return tracer.currentSpan();
 			}
-
-			@Override
-			public boolean hasKey(Object key) {
-				return requestContext.hasKey(key);
-			}
-
-			@Override
-			public int size() {
-				return requestContext.size();
-			}
-
-			@Override
-			public Stream<Map.Entry<Object, Object>> stream() {
-				return requestContext.stream();
-			}
-		};
+		}
+		return null;
 	}
 
 }
