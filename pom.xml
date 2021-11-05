@@ -59,6 +59,7 @@
 				<module>cassandra-reactive</module>
 				<module>baggage-producer</module>
 				<module>baggage-consumer</module>
+				<module>mongodb-reactive</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -94,6 +95,7 @@
 				<module>cassandra-reactive</module>
 				<module>baggage-producer</module>
 				<module>baggage-consumer</module>
+				<module>mongodb-reactive</module>
 			</modules>
 		</profile>
 	</profiles>
