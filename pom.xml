@@ -60,6 +60,8 @@
 				<module>baggage-producer</module>
 				<module>baggage-consumer</module>
 				<module>mongodb-reactive</module>
+				<module>kafka-producer</module>
+				<module>kafka-consumer</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -96,6 +98,8 @@
 				<module>baggage-producer</module>
 				<module>baggage-consumer</module>
 				<module>mongodb-reactive</module>
+				<module>kafka-producer</module>
+				<module>kafka-consumer</module>
 			</modules>
 		</profile>
 	</profiles>
