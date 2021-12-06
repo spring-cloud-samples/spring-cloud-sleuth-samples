@@ -62,8 +62,9 @@
 				<module>mongodb-reactive</module>
 				<module>kafka-producer</module>
 				<module>kafka-consumer</module>
-				<module>kafka-reactive-producer</module>
+				<module>kafka-reactive-producer</module>       
 				<module>kafka-reactive-consumer</module>
+				<module>session</module>
 				<module>acceptance-tests</module>
 			</modules>
 		</profile>
@@ -104,6 +105,7 @@
 				<module>kafka-consumer</module>
 				<module>kafka-reactive-producer</module>
 				<module>kafka-reactive-consumer</module>
+				<module>session</module>
 			</modules>
 		</profile>
 	</profiles>
