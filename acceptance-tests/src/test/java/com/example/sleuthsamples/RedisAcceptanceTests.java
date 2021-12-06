@@ -26,7 +26,7 @@ class RedisAcceptanceTests extends AcceptanceTestsBase {
 			.withExposedPorts(6379);
 
 	@Test
-	void should_pass_tracing_context_from_client_to_redis_based_session_app(TestInfo testInfo) {
+	void should_pass_tracing_context_from_client_to_redis_based_session_app(TestInfo testInfo) throws Exception {
 		// given
 		int port = SocketUtils.findAvailableTcpPort();
 		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "session", redisConfiguration(port)));
