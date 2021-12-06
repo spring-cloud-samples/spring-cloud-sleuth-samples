@@ -26,6 +26,7 @@ public class StreamReactiveConsumerApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		log.warn("Remember about calling <.subscribe()> at the end of your Consumer<Flux> bean!");
+		log.warn("Remember about finishing the span manually before calling subscribe!");
 	}
 
 	@Bean
