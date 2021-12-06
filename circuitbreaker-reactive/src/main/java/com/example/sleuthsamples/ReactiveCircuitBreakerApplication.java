@@ -12,7 +12,7 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
-import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.SpanAndScope;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Service;
 
@@ -46,18 +46,20 @@ class CircuitService {
 	}
 
 	Mono<String> call() {
-		Span span = this.tracer.nextSpan();
-		try (Tracer.SpanInScope ws = this.tracer.withSpan(span.start())) {
-			return this.factory.create("circuit").run(Mono.defer(() -> {
-				log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", this.tracer.currentSpan().context().traceId());
-				return Mono.error(new IllegalStateException("BOOM"));
-			}), throwable -> {
-				log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from producer", this.tracer.currentSpan().context().traceId());
-				return Mono.just("fallback");
-			});
-		}
-		finally {
-			span.end();
-		}
+		// You don't need this in your code unless you want to create new spans manually
+		return Mono.just(this.tracer.nextSpan().name("reactive-circuit-breaker"))
+				.flatMap(span -> {
+					// You don't need this in your code unless you want to create new spans manually
+					Tracer.SpanInScope spanInScope = this.tracer.withSpan(span.start());
+					SpanAndScope spanAndScope = new SpanAndScope(span, spanInScope);
+					return this.factory.create("circuit").run(Mono.defer(() -> {
+								log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", this.tracer.currentSpan().context().traceId());
+								return Mono.error(new IllegalStateException("BOOM"));
+							}), throwable -> {
+								log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from producer", this.tracer.currentSpan().context().traceId());
+								return Mono.just("fallback");
+							})
+							.doFinally(signalType -> spanAndScope.close());
+				});
 	}
 }
