@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: reactive-kafka-consumer
+
+spring.kafka.consumer.group-id: foo
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG

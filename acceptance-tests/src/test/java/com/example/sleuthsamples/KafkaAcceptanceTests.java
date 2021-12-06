@@ -38,10 +38,10 @@ class KafkaAcceptanceTests extends AcceptanceTestsBase {
 	@Test
 	void should_pass_tracing_context_from_stream_reactive_producer_to_reactive_consumer(TestInfo testInfo) throws Exception {
 		// given
-		String consumerId = wait10seconds(() -> deploy(testInfo, "stream-reactive-consumer", brokerSetup()));
+		String consumerId = wait10seconds(() -> deploy(testInfo, "kafka-reactive-consumer", brokerSetup()));
 
 		// when
-		String producerId = deploy(testInfo, "stream-reactive-producer", brokerSetup());
+		String producerId = deploy(testInfo, "kafka-reactive-producer", brokerSetup());
 
 		// then
 		assertThatTraceIdGotPropagated(producerId, consumerId);
