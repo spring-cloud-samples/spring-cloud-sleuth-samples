@@ -1,0 +1,8 @@
+:branch: main
+
+= Spring Security
+
+We are listening on `SecurityContextChangedEvent` and annotate the spans based on the events coming from Spring Security.
+You can check the instrumentation code in the https://github.com/spring-cloud/spring-cloud-sleuth/blob/main/spring-cloud-sleuth-instrumentation/src/main/java/org/springframework/cloud/sleuth/instrument/security/TracingSecurityContextChangedListener.java [`org.springframework.cloud.sleuth.instrument.security` package].
+
+You can test the app via a browser by visiting http://localhost:8080 or hitting the API endpoint via a client, e.g.: `http -a user:password :8080/api/hello` or `curl user:password@localhost:8080/api/hello`.

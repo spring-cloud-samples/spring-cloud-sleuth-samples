@@ -108,7 +108,7 @@ public class DeployerApplication implements CommandLineRunner {
 		return new AppDeploymentRequest(appDefinition, new MavenResource.Builder()
 				.groupId("com.example.sleuthsamples")
 				.artifactId("mvc")
-				.version("1.0.0-SLEUTH")
+				.version("0.0.1-SNAPSHOT")
 				.build());
 	}
 }

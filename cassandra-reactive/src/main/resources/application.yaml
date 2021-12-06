@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: cassandra-reactive
+  sleuth:
+    reactor:
+      instrumentation-type: decorate_queues
+
+spring.data.cassandra:
+  keyspace-name: example
+  schema-action: recreate
+  local-datacenter: datacenter1
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG

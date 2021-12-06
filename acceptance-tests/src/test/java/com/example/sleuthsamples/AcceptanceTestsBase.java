@@ -1,10 +1,13 @@
 package com.example.sleuthsamples;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.TestInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +16,8 @@ import org.springframework.cloud.deployer.spi.app.DeploymentState;
 
 @SpringBootTest
 class AcceptanceTestsBase {
+
+	private static final Logger log = LoggerFactory.getLogger(AcceptanceTestsBase.class);
 
 	@Autowired
 	ProjectDeployer projectDeployer;
@@ -44,8 +49,21 @@ class AcceptanceTestsBase {
 		return this.projectDeployer.deploy(testInfo, appName, Map.of());
 	}
 
-	String waitUntilStarted(Callable<String> callable) {
+	String waitUntilStarted(Callable<String> callable) throws Exception {
 		return this.projectDeployer.waitUntilStarted(callable);
+	}
+
+	String wait10seconds(Callable<String> callable) throws Exception {
+		try {
+			String id = callable.call();
+			long millis = Duration.ofSeconds(10).toMillis();
+			log.info("Will wait for [{}] millis before the app starts", millis);
+			Thread.sleep(millis);
+			return id;
+		}
+		catch (InterruptedException e) {
+			throw new IllegalStateException();
+		}
 	}
 
 	private void undeploy(String id) {

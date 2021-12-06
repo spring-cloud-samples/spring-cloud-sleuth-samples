@@ -35,6 +35,7 @@
 				<module>integration</module>
 				<module>webflux</module>
 				<module>webclient</module>
+				<module>security</module>
 				<module>stream-producer</module>
 				<module>stream-consumer</module>
 				<module>stream-reactive-producer</module>
@@ -54,6 +55,15 @@
 				<module>data-reactive</module>
 				<module>vault-resttemplate</module>
 				<module>vault-webclient</module>
+				<module>cassandra</module>
+				<module>cassandra-reactive</module>
+				<module>baggage-producer</module>
+				<module>baggage-consumer</module>
+				<module>mongodb-reactive</module>
+				<module>kafka-producer</module>
+				<module>kafka-consumer</module>
+				<module>kafka-reactive-producer</module>       
+				<module>kafka-reactive-consumer</module>
 				<module>session</module>
 				<module>acceptance-tests</module>
 			</modules>
@@ -66,6 +76,7 @@
 				<module>integration</module>
 				<module>webflux</module>
 				<module>webclient</module>
+				<module>security</module>
 				<module>stream-producer</module>
 				<module>stream-consumer</module>
 				<module>stream-reactive-producer</module>
@@ -85,6 +96,15 @@
 				<module>data-reactive</module>
 				<module>vault-resttemplate</module>
 				<module>vault-webclient</module>
+				<module>cassandra</module>
+				<module>cassandra-reactive</module>
+				<module>baggage-producer</module>
+				<module>baggage-consumer</module>
+				<module>mongodb-reactive</module>
+				<module>kafka-producer</module>
+				<module>kafka-consumer</module>
+				<module>kafka-reactive-producer</module>
+				<module>kafka-reactive-consumer</module>
 				<module>session</module>
 			</modules>
 		</profile>

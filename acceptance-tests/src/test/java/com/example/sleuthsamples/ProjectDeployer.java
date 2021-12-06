@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.TestInfo;
@@ -57,20 +58,28 @@ class ProjectDeployer {
 		return rebuildAndDeploy(testInfo, appName, request);
 	}
 
-	String waitUntilStarted(Callable<String> callable) {
+	String waitUntilStarted(Callable<String> callable) throws Exception {
+		AtomicReference<String> app = new AtomicReference<>();
 		try {
-			String app = callable.call();
+			app.set(callable.call());
 			Awaitility.await()
 					.pollInterval(1, TimeUnit.SECONDS)
 					.atMost(120, TimeUnit.SECONDS).untilAsserted(() -> {
 				log.info("Waiting for the application with id [{}] to start...", app);
-				then(this.appDeployer.status(app).getState()).isEqualTo(DeploymentState.deployed);
+				then(this.appDeployer.status(app.get()).getState()).isEqualTo(DeploymentState.deployed);
 			});
 			log.info("Application with id [{}] has started successfully", app);
-			return app;
+			return app.get();
 		}
-		catch (Exception exception) {
-			throw new IllegalStateException(exception);
+		catch (Throwable er) {
+			if (app.get() != null) {
+				String id = app.get();
+				log.error("Application with id [" + id + "] failed to start. These are its logs\n\n");
+				log.error(this.appDeployer.getLog(id));
+				throw er;
+			}
+			log.error("The app failed to start and no application id was passed - can't fetch the logs");
+			throw er;
 		}
 	}
 
@@ -106,7 +115,7 @@ class ProjectDeployer {
 		return new AppDeploymentRequest(appDefinition, new MavenResource.Builder()
 				.groupId("com.example.sleuthsamples")
 				.artifactId(appName)
-				.version("1.0.0-SLEUTH")
+				.version("0.0.1-SNAPSHOT")
 				.build());
 	}
 

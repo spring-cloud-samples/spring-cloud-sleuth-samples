@@ -9,9 +9,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.util.SocketUtils;
 
 // Uncomment the properties to rebuild the projects
 // @formatter:off
@@ -23,27 +20,27 @@ import org.springframework.util.SocketUtils;
 class RabbitAcceptanceTests extends AcceptanceTestsBase {
 
 	@Container
-	static RabbitMQContainer rabbit = new RabbitMQContainer("rabbitmq:3.7.25-management-alpine");
+	static RabbitMQContainer broker = new RabbitMQContainer("rabbitmq:3.7.25-management-alpine");
 
 	@Test
-	void should_pass_tracing_context_from_stream_producer_to_consumer(TestInfo testInfo) {
+	void should_pass_tracing_context_from_stream_producer_to_consumer(TestInfo testInfo) throws Exception {
 		// given
-		String consumerId = deploy(testInfo, "stream-consumer", rabbitMqPort());
+		String consumerId = wait10seconds(() -> deploy(testInfo, "stream-consumer", brokerSetup()));
 
 		// when
-		String producerId = deploy(testInfo, "stream-producer", rabbitMqPort());
+		String producerId = deploy(testInfo, "stream-producer", brokerSetup());
 
 		// then
 		assertThatTraceIdGotPropagated(producerId, consumerId);
 	}
 
 	@Test
-	void should_pass_tracing_context_from_stream_reactive_producer_to_reactive_consumer(TestInfo testInfo) {
+	void should_pass_tracing_context_from_stream_reactive_producer_to_reactive_consumer(TestInfo testInfo) throws Exception {
 		// given
-		String consumerId = deploy(testInfo, "stream-reactive-consumer", rabbitMqPort());
+		String consumerId = wait10seconds(() -> deploy(testInfo, "stream-reactive-consumer", brokerSetup()));
 
 		// when
-		String producerId = deploy(testInfo, "stream-reactive-producer", rabbitMqPort());
+		String producerId = deploy(testInfo, "stream-reactive-producer", brokerSetup());
 
 		// then
 		assertThatTraceIdGotPropagated(producerId, consumerId);
@@ -52,14 +49,14 @@ class RabbitAcceptanceTests extends AcceptanceTestsBase {
 	@Test
 	void should_pass_tracing_context_with_bus(TestInfo testInfo) {
 		// when
-		String producerId = deploy(testInfo, "bus", rabbitMqPort());
+		String producerId = deploy(testInfo, "bus", brokerSetup());
 
 		// then
 		assertThatTraceIdGotPropagated(producerId);
 	}
 
-	private Map<String, String> rabbitMqPort() {
-		return Map.of("spring.rabbitmq.port", rabbit.getAmqpPort().toString());
+	private Map<String, String> brokerSetup() {
+		return Map.of("spring.rabbitmq.port", broker.getAmqpPort().toString());
 	}
 
 }

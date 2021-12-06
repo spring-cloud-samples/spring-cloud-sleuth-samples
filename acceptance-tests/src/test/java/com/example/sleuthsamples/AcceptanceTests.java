@@ -17,7 +17,7 @@ import org.springframework.util.SocketUtils;
 class AcceptanceTests extends AcceptanceTestsBase {
 
 	@Test
-	void should_pass_tracing_context_from_rest_template_to_mvc(TestInfo testInfo) {
+	void should_pass_tracing_context_from_rest_template_to_mvc(TestInfo testInfo) throws Exception {
 		// given
 		int port = SocketUtils.findAvailableTcpPort();
 		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "mvc", port));
@@ -30,7 +30,7 @@ class AcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
-	void should_pass_tracing_context_from_web_client_to_webflux(TestInfo testInfo) {
+	void should_pass_tracing_context_from_web_client_to_webflux(TestInfo testInfo) throws Exception {
 		// given
 		int port = SocketUtils.findAvailableTcpPort();
 		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "webflux", port));
@@ -43,7 +43,7 @@ class AcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
-	void should_pass_tracing_context_from_openfeign_to_mvc(TestInfo testInfo) {
+	void should_pass_tracing_context_from_openfeign_to_mvc(TestInfo testInfo) throws Exception {
 		// given
 		int port = SocketUtils.findAvailableTcpPort();
 		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "mvc", port));
@@ -56,7 +56,7 @@ class AcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
-	void should_pass_tracing_context_from_gateway_to_mvc(TestInfo testInfo) {
+	void should_pass_tracing_context_from_gateway_to_mvc(TestInfo testInfo) throws Exception {
 		// given
 		int port = SocketUtils.findAvailableTcpPort();
 		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "mvc", port));
@@ -114,7 +114,7 @@ class AcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
-	void should_pass_tracing_context_from_rsocket(TestInfo testInfo) {
+	void should_pass_tracing_context_from_rsocket(TestInfo testInfo) throws Exception {
 		// given
 		int port = SocketUtils.findAvailableTcpPort();
 		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "rsocket-server", port));
@@ -145,7 +145,7 @@ class AcceptanceTests extends AcceptanceTestsBase {
 	}
 
 	@Test
-	void should_pass_tracing_context_with_config_server(TestInfo testInfo) {
+	void should_pass_tracing_context_with_config_server(TestInfo testInfo) throws Exception {
 		// when
 		int port = SocketUtils.findAvailableTcpPort();
 		String appId = waitUntilStarted(() -> deployWebApp(testInfo, "config-server", port));
@@ -161,5 +161,31 @@ class AcceptanceTests extends AcceptanceTestsBase {
 
 		// then
 		assertThatLogsContainPropagatedIdAtLeastXNumberOfTimes(appId, "deployer", 9);
+	}
+
+	@Test
+	void should_pass_baggage_and_remote_fields(TestInfo testInfo) throws Exception {
+		// given
+		int port = SocketUtils.findAvailableTcpPort();
+		String consumerId = waitUntilStarted(() -> deployWebApp(testInfo, "baggage-consumer", port));
+
+		// when
+		String producerId = deploy(testInfo, "baggage-producer", Map.of("url", "http://localhost:" + port));
+
+		// then
+		assertThatTraceIdGotPropagated(producerId, consumerId);
+	}
+
+	@Test
+	void should_pass_tracing_context_from_rest_template_to_security(TestInfo testInfo) throws Exception {
+		// given
+		int port = SocketUtils.findAvailableTcpPort();
+		String producerId = waitUntilStarted(() -> deployWebApp(testInfo, "security", port));
+
+		// when
+		String consumerId = deploy(testInfo, "resttemplate", Map.of("url", "http://localhost:" + port + "/api/hello"));
+
+		// then
+		assertThatTraceIdGotPropagated(producerId, consumerId);
 	}
 }

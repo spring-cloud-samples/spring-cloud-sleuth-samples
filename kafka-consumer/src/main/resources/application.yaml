@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: kafka-consumer
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG

@@ -1,0 +1,16 @@
+server:
+  port: 7200
+
+spring:
+  application:
+    name: baggage-consumer
+  sleuth:
+    baggage:
+      remote-fields: mybaggage, myremotefield
+      correlation-fields: mybaggage
+
+# For tests
+logging.level.org.springframework.cloud.sleuth: DEBUG
+
+logging.pattern.level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-},%X{mybaggage:-}]"
+
