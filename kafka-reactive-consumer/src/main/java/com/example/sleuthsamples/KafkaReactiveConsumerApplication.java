@@ -107,8 +107,6 @@ class MyKafkaListener {
 					return Flux.just(Tuples.of(consumerRecord.value(), spanAndScope))
 							.doOnNext(consRecord -> log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", tracer.currentSpan().context().traceId())) // for tests - you don't need this in your code
 							.doOnNext(objects -> log.info("Got message <{}>", objects.getT1()))
-							// remember to close the span and scope
-							.doOnNext(objects -> objects.getT2().close())
 							.doOnError(throwable -> log.error("Exception occurred", throwable))
 							.doFinally(signalType -> spanAndScope.close());
 				})

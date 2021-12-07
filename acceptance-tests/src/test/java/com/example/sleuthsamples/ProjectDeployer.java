@@ -1,6 +1,7 @@
 package com.example.sleuthsamples;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -107,8 +108,19 @@ class ProjectDeployer {
 	}
 
 	private AppDeploymentRequest appRequest(String appName, Map<String, String> props) {
-		AppDefinition appDefinition = new AppDefinition(appName, props);
+		Map<String, String> map = new HashMap<>(props);
+		attachWavefrontConfigurationIfPresent(map);
+		AppDefinition appDefinition = new AppDefinition(appName, map);
 		return deploymentRequest(appName, appDefinition);
+	}
+
+	private void attachWavefrontConfigurationIfPresent(Map<String, String> map) {
+		if (System.getenv().containsKey("WAVEFRONT_API_TOKEN")) {
+			if (System.getenv().containsKey("WAVEFRONT_URI")) {
+				map.put("management.metrics.export.wavefront.uri", System.getenv("WAVEFRONT_URI"));
+			}
+			map.put("management.metrics.export.wavefront.api-token", System.getenv("WAVEFRONT_API_TOKEN"));
+		}
 	}
 
 	private AppDeploymentRequest deploymentRequest(String appName, AppDefinition appDefinition) {
