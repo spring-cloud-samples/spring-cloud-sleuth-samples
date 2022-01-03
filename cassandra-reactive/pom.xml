@@ -102,6 +102,10 @@
 					<groupId>org.springframework.cloud</groupId>
 					<artifactId>spring-cloud-sleuth-otel-autoconfigure</artifactId>
 				</dependency>
+				<dependency>
+					<groupId>io.opentelemetry</groupId>
+					<artifactId>opentelemetry-exporter-zipkin</artifactId>
+				</dependency>
 			</dependencies>
 		</profile>
 		<profile>

@@ -1,6 +1,10 @@
 spring:
   application:
     name: kafka-producer
+  sleuth:
+    otel:
+      config:
+        trace-id-ratio-based: 1.0
 
 # For tests
 logging.level.org.springframework.cloud.sleuth: DEBUG

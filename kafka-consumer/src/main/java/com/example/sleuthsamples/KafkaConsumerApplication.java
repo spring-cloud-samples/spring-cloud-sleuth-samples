@@ -8,10 +8,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.Message;
 
 @SpringBootApplication
 @EnableKafka
@@ -48,9 +50,14 @@ class MyKafkaListener {
 	}
 
 	@KafkaListener(topics = "mytopic", groupId = "group")
-	void onMessage(String message) {
-		log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", tracer.currentSpan().context().traceId());
-		log.info("Got message <{}>", message);
+	void onMessage(Message message) {
+		Span span = this.tracer.nextSpan().name("on-message").start();
+		try (Tracer.SpanInScope ws = this.tracer.withSpan(span)) {
+			log.info("Got message <{}>", message.getPayload());
+			log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", this.tracer.currentSpan().context().traceId());
+		} finally {
+			span.end();
+		}
 	}
 
 }
