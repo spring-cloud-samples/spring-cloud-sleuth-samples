@@ -62,7 +62,7 @@ class WebClientService {
 		Span hello = this.tracer.nextSpan().name("hello");
 		try (Tracer.SpanInScope spanInScope = this.tracer.withSpan(hello.start())) {
 			int port = environment.getProperty("server.port", Integer.class, 8888);
-			log.info("Got back the following response from config server \n{}", this.restTemplate.getForObject("http://localhost:" + port + "/main/application.yml", String.class));
+			log.info("Got back the following response from config server \n{}", this.restTemplate.getForObject("http://localhost:" + port + "/main-application.yml", String.class));
 		} finally {
 			hello.end();
 		}
