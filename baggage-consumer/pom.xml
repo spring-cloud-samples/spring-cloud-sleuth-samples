@@ -15,7 +15,7 @@
 
 	<properties>
 		<spring-cloud.version>2021.0.8-SNAPSHOT</spring-cloud.version>
-		<wiremock.version>2.29.1</wiremock.version>
+		<wiremock.version>2.35.1</wiremock.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
